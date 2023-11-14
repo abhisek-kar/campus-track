@@ -37,11 +37,20 @@ The College Student Monitoring System is a web-based application designed to str
 - Describe any prerequisites or system requirements here (e.g., programming languages, web server, database).
 - Include links to installation guides for required software.
 
+### Clone the Repository
+git clone (https://github.com/abhisek-kar/Campus-Track)
+
+### Navigate to the Project Directory
+cd your-repo
+
 ### Installation
+npm install
 
-1. Clone the repository: `git clone https://github.com/your-username/your-repo.git`
-2. Follow detailed installation instructions in the [Installation Guide](docs/installation.md) (if available).
+### Start the Development Server
+npm start
 
+### Open in Your Browser
+Open your browser and visit (http://localhost:3000) to view the app.
 ## Usage
 
 - Provide instructions on how to use the application.
