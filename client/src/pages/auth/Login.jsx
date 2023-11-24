@@ -3,34 +3,46 @@ import InputBox from "../../components/InputBox";
 import { FiArrowRightCircle } from "react-icons/fi";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { ReactComponent as LoginSVG } from "../../assets/svg/Login.svg";
-import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+import Loader from "../../components/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../redux/auth/authSlices";
 
 const Login = () => {
-  const [username, setUsername] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [role, setRole] = useState(null);
+  const { loading } = useSelector((state) => state.authReducer);
+  const dispatch = useDispatch();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
   useEffect(() => {
     // Create a URLSearchParams object from the current URL
     const searchParams = new URLSearchParams(window.location.search);
     // Access a specific query parameter by name
     const userRole = searchParams.get("role");
-    console.log(userRole);
+    if (!userRole) {
+      window.location.replace("/");
+    }
     setRole(userRole);
   }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!username || !password) {
-      alert("All fields are mandatory");
+    if (!email || !password) {
+      toast.error("All fields are mandatory", { duration: 2000 });
       return;
     }
-    const { data } = await axios.post("http://localhost:8080/api/v1/user");
+    dispatch(loginUser({ email, password, role }));
+    setEmail("");
+    setPassword("");
   };
   return (
     <div
-      className="grid     min-h-screen"
+      className="grid min-h-screen"
       style={{ gridTemplateColumns: "2fr 1fr" }}
     >
+      <Toaster />
+
       {/* svg components */}
       <div className="w-full h-screen flex justify-center items-center">
         <LoginSVG className="w-full h-full" />
@@ -42,14 +54,14 @@ const Login = () => {
         style={{ backgroundColor: "white" }}
       >
         <div className=" font-mono text-2xl mt-1 mb-5 font-semibold tracking-wider text-gray-700 border-b-2 border-gray-600">
-          {role} Login
+          {role && role.charAt(0).toUpperCase() + role.slice(1)} Login
         </div>
         <InputBox
           placeholder={"e.g xyz@gmail.com"}
-          labelName={"Your Username"}
-          value={username}
+          labelName={"Your Email"}
+          value={email}
           onChange={(e) => {
-            setUsername(e.target.value);
+            setEmail(e.target.value);
           }}
         />
         {/* password */}
@@ -89,6 +101,8 @@ const Login = () => {
           <FiArrowRightCircle className="mr-3" />
         </button>
       </form>
+      {/* lshowing loader */}
+      {loading ? <Loader /> : null}
     </div>
   );
 };

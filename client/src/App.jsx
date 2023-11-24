@@ -1,15 +1,20 @@
-import React from "react";
+// eslint-disable-next-line
+
+import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import Login from "./pages/auth/Login";
-import StudentAttendance from "./pages/student-dashboard/StudentAttendance";
-import StudentAcademy from "./pages/student-dashboard/StudentAcademy";
-import StudentPerformance from "./pages/student-dashboard/StudentPerformance";
-import StudentSchedule from "./pages/student-dashboard/StudentSchedule";
-import StudentHome from "./pages/student-dashboard/StudentHome";
 import PageNotFound from "./pages/PageNotFound";
+import UnAuthorizedPage from "./pages/UnAuthorizedPage";
+import StudentDashBoard from "./components/dashboard/StudentDashBoard";
+import FacultyDashBoard from "./components/dashboard/FacultyDashBoard";
+import AdminDashBoard from "./components/dashboard/AdminDashBoard";
 
 const App = () => {
+  let [isAuthentcatedAsStudent, setIsAuthentcatedAsStudent] = useState(true);
+  let [isAuthentcatedAsFaculty, setIsAuthentcatedAsFaculty] = useState(true);
+  let [isAuthentcatedAsAdmin, setIsAuthentcatedAsAdmin] = useState(true);
+
   return (
     <>
       <Routes>
@@ -18,13 +23,36 @@ const App = () => {
         <Route path="/login" element={<Login />} />
 
         {/* private routes */}
-        {/* student dashboard routes */}
 
-        <Route path="/student" element={<StudentHome />} />
-        <Route path="/student/attendance" element={<StudentAttendance />} />
-        <Route path="/student/academy" element={<StudentAcademy />} />
-        <Route path="/student/performance" element={<StudentPerformance />} />
-        <Route path="/student/schedule" element={<StudentSchedule />} />
+        {/* allow student routes if authenticated  */}
+        <Route
+          path="/student/:id/*"
+          element={
+            isAuthentcatedAsStudent ? (
+              <StudentDashBoard />
+            ) : (
+              <UnAuthorizedPage />
+            )
+          }
+        />
+        {/* allow admin routes if authenticated  */}
+        <Route
+          path="/admin/:id/*"
+          element={
+            isAuthentcatedAsAdmin ? <AdminDashBoard /> : <UnAuthorizedPage />
+          }
+        />
+        {/* allow faculty routes if authenticated  */}
+        <Route
+          path="/faculty/:id/*"
+          element={
+            isAuthentcatedAsFaculty ? (
+              <FacultyDashBoard />
+            ) : (
+              <UnAuthorizedPage />
+            )
+          }
+        />
 
         {/* page not found  */}
         <Route path="*" element={<PageNotFound />} />

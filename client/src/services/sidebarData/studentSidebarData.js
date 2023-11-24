@@ -4,30 +4,30 @@ import { PiChalkboardTeacherFill } from "react-icons/pi";
 import { GiProgression } from "react-icons/gi";
 import { MdSchedule } from "react-icons/md";
 
-export const studentSidebarrData = [
+export const studentSidebarData = [
   {
     title: "Home",
     icon: <AiFillHome className="w-5 h-5 " />,
-    link: "/student",
+    link: "/student/:id",
   },
   {
     title: "Academy",
     icon: <PiChalkboardTeacherFill className="w-5 h-5 " />,
-    link: "/student/academy",
+    link: "/student/:id/academy",
   },
   {
     title: "Attendance",
     icon: <BsCardChecklist className="w-5 h-5 " />,
-    link: "/student/attendance",
+    link: "/student/:id/attendance",
   },
   {
     title: "Performance",
     icon: <GiProgression className="w-5 h-5 " />,
-    link: "/student/performance",
+    link: "/student/:id/performance",
   },
   {
     title: "Schedule",
     icon: <MdSchedule className="w-5 h-5 " />,
-    link: "/student/schedule",
+    link: "/student/:id/schedule",
   },
 ];

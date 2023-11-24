@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import {
   BiSolidDownArrow,
   BiSolidUpArrow,
@@ -7,7 +8,7 @@ import {
 } from "react-icons/bi";
 import { ReactComponent as College } from "../assets/svg/College.svg";
 
-let roles = [{ role: "Student" }, { role: "Faculty" }, { role: "Admin" }];
+let roles = [{ role: "student" }, { role: "faculty" }, { role: "admin" }];
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -61,7 +62,9 @@ const HomePage = () => {
                   }}
                   className="w-32 flex items-center justify-between gap-1 cursor-pointer  hover:text-white hover:bg-themeBlue py-1 px-2 rounded-sm "
                 >
-                  <span className="font-semibold text-xl ">{item.role}</span>
+                  <span className="font-semibold text-xl ">
+                    {item.role.charAt(0).toUpperCase() + item.role.slice(1)}
+                  </span>
                   <BiSolidRightArrowAlt className="" />
                 </div>
               );
