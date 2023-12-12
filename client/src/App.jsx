@@ -9,6 +9,7 @@ import UnAuthorizedPage from "./pages/UnAuthorizedPage";
 import StudentDashBoard from "./components/dashboard/StudentDashBoard";
 import FacultyDashBoard from "./components/dashboard/FacultyDashBoard";
 import AdminDashBoard from "./components/dashboard/AdminDashBoard";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   let [isAuthentcatedAsStudent, setIsAuthentcatedAsStudent] = useState(true);
@@ -17,6 +18,7 @@ const App = () => {
 
   return (
     <>
+      <Toaster />
       <Routes>
         {/* public routes */}
         <Route path="/" element={<HomePage />} />

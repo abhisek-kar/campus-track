@@ -9,7 +9,13 @@ const addStudent = async (req, res) => {
         .status(401)
         .json({ message: "Don't have access to add student " });
     }
-    const {} = req.body;
+    const {
+      studentId,
+      StudentMail,
+      studentName,
+      studentAddress,
+      studentEnrollDate,
+    } = req.body;
   } catch (error) {
     console.error(error);
     return res

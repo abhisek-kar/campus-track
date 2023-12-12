@@ -3,10 +3,11 @@ import { FaUserAlt } from "react-icons/fa";
 import { AiTwotoneSetting } from "react-icons/ai";
 import { IoMdNotifications } from "react-icons/io";
 
-const DashboardHeader = ({ onClick, role, userName }) => {
+const DashboardHeader = ({ onClick, role, userName, children }) => {
   return (
-    <>
-      <div className=" flex flex-row-reverse items-center mt-4 gap-5 mr-5">
+    <div className=" flex items-center justify-between mt-2 ">
+      <div>{children}</div>
+      <div className="flex items-center gap-5 mr-5">
         <button onClick={onClick}>
           <IoMdNotifications className="w-6 h-6  text-gray-700" />
         </button>
@@ -23,7 +24,7 @@ const DashboardHeader = ({ onClick, role, userName }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

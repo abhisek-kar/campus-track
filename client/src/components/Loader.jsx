@@ -1,5 +1,5 @@
 import React from "react";
-import { ClipLoader, ScaleLoader } from "react-spinners";
+import { ScaleLoader } from "react-spinners";
 
 const Loader = () => {
   return (

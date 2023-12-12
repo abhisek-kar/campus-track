@@ -2,7 +2,7 @@ import { AiFillHome } from "react-icons/ai";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { PiStudentFill } from "react-icons/pi";
 import { IoPersonAddSharp } from "react-icons/io5";
-import { FaBookOpen } from "react-icons/fa";
+import { IoIosPersonAdd } from "react-icons/io";
 
 export const adminSidebarData = [
   {
@@ -20,14 +20,15 @@ export const adminSidebarData = [
     icon: <FaChalkboardTeacher className="w-5 h-5 " />,
     link: "/admin/:id/faculties",
   },
-  {
-    title: "Courses",
-    icon: <FaBookOpen className="w-5 h-5 " />,
-    link: "/admin/:id/courses",
-  },
+
   {
     title: "Add Student",
     icon: <IoPersonAddSharp className="w-5 h-5 " />,
     link: "/admin/:id/add-student",
+  },
+  {
+    title: "Add Faculty",
+    icon: <IoIosPersonAdd className="w-5 h-5 " />,
+    link: "/admin/:id/add-faculty",
   },
 ];
