@@ -2,24 +2,16 @@ import React, { useState } from "react";
 import SideBar from "../SideBar";
 import { adminSidebarData } from "../../services/sidebarData/adminSidebarData";
 import StudentNotificationModal from "../modals/StudentNotificationModal";
-import { Routes, Route } from "react-router-dom";
-import AdminHome from "../../pages/admin/AdminHome";
-import AdminAddStudent from "../../pages/admin/AdminAddStudent";
-import AdminFaculties from "../../pages/admin/AdminFaculties";
-import AdminStudents from "../../pages/admin/AdminStudents";
 import DashboardHeader from "./DashboardHeader";
-import AdminAddFaculty from "../../pages/admin/AdminAddFaculty";
-import PageNotFound from "../../pages/PageNotFound";
 
-const AdminDashBoard = () => {
+const AdminDashBoard = ({ children }) => {
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   return (
-    <div className="grid grid-cols-[1fr,5fr]">
+    <div className="grid grid-cols-[1fr, 5fr]">
       {/* sidebar */}
       <SideBar data={adminSidebarData} />
       {/* right part */}
-      <div className="grid grid-rows-[50px,1fr]">
-        {/* 1st child of right part - 50px */}
+      <div className="w-full">
         <DashboardHeader
           onClick={() => {
             setShowNotificationModal(true);
@@ -28,17 +20,8 @@ const AdminDashBoard = () => {
           userName={"Admin Name"}
         />
 
-        {/* 2nd part of right part - 1fr */}
-        <div className="">
-          {/* Admin  */}
-          <Routes>
-            <Route path="" element={<AdminHome />} />
-            <Route path="add-student" element={<AdminAddStudent />} />
-            <Route path="add-faculty" element={<AdminAddFaculty />} />
-            <Route path="faculties" element={<AdminFaculties />} />
-            <Route path="students" element={<AdminStudents />} />
-          </Routes>
-          {/* <Route path="*" element={<PageNotFound />} /> */}
+        <div className="absolute ml-[200px] mt-[60px] w-[calc(100%-210px)] p-2">
+          {children}
         </div>
       </div>
       {/* modal shoowing all notification for students */}

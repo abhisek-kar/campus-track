@@ -7,11 +7,11 @@ module.exports = {
         // Configure your color palette here
         themeBlue: "#0f7491",
       },
-      fontFamily: {
-        robotoSlab: ["Roboto Slab", "serif"],
-        roboto: ["Roboto", "sans-serif"],
-        workSans: ["Work Sans", "sans-serif"],
-      },
+      // fontFamily: {
+      //   robotoSlab: ["Roboto Slab", "serif"],
+      //   roboto: ["Roboto", "sans-serif"],
+      //   workSans: ["Work Sans", "sans-serif"],
+      // },
     },
   },
   plugins: [],

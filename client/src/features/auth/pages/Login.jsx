@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import InputBox from "../../components/InputBox";
 import { FiArrowRightCircle } from "react-icons/fi";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { ReactComponent as LoginSVG } from "../../assets/svg/Login.svg";
+import { ReactComponent as LoginSVG } from "../../../assets/svg/Login.svg";
 import toast, { Toaster } from "react-hot-toast";
-import Loader from "../../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../redux/auth/authSlices";
 import { Link } from "react-router-dom";
-import ForgotPasswordModal from "../../components/modals/ForgotPasswordModal";
-import StudentRegister from "../../components/auth/StudentRegister";
-import FacultyRegister from "../../components/auth/FacultyRegister";
-import AdminRegister from "../../components/auth/AdminRegister";
+import Loader from "./../../../components/Loader";
+import ForgotPasswordModal from "./../../../components/modals/ForgotPasswordModal";
+import StudentRegister from "./../../../components/auth/StudentRegister";
+import FacultyRegister from "./../../../components/auth/FacultyRegister";
+import AdminRegister from "./../../../components/auth/AdminRegister";
+import { loginUser } from "./../../../redux/auth/authSlices";
+import InputBox from "./../../../components/InputBox";
 
 const Login = () => {
   const { loading } = useSelector((state) => state.authReducer);

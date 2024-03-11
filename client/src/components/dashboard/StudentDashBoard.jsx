@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import SideBar from "../SideBar";
 
 import { studentSidebarData } from "../../services/sidebarData/studentSidebarData";
-import StudentNotificationModal from "../modals/StudentNotificationModal";
-import StudentHome from "../../pages/student/StudentHome";
-import StudentAttendance from "../../pages/student/StudentAttendance";
-import StudentAcademy from "../../pages/student/StudentAcademy";
-import StudentPerformance from "../../pages/student/StudentPerformance";
-import StudentSchedule from "../../pages/student/StudentSchedule";
 import { Routes, Route } from "react-router-dom";
 import DashboardHeader from "./DashboardHeader";
+import StudentNotificationModal from "./../modals/StudentNotificationModal";
+import StudentHome from "./../../features/student/pages/StudentHome";
+import StudentAttendance from "./../../features/student/pages/StudentAttendance";
+import StudentAcademy from "./../../features/student/pages/StudentAcademy";
+import StudentPerformance from "./../../features/student/pages/StudentPerformance";
+import StudentSchedule from "./../../features/student/pages/StudentSchedule";
 
 const StudentDashBoard = () => {
   const [showNotificationModal, setShowNotificationModal] = useState(false);

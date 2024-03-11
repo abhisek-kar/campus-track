@@ -3,12 +3,12 @@ import SideBar from "../SideBar";
 import { facultySidebarData } from "../../services/sidebarData/facultySidebarData";
 import StudentNotificationModal from "../modals/StudentNotificationModal";
 import { Routes, Route } from "react-router-dom";
-import FacultyHome from "../../pages/faculty/FacultyHome";
-import FacultyAttendance from "../../pages/faculty/FacultyAttendance";
-import FacultyStudents from "../../pages/faculty/FacultyStudents";
-import FacultyAssignments from "../../pages/faculty/FacultyAssignments";
-import FacultySchedule from "../../pages/faculty/FacultySchedule";
 import DashboardHeader from "./DashboardHeader";
+import FacultyHome from "./../../features/faculty/pages/FacultyHome";
+import FacultyAttendance from "./../../features/faculty/pages/FacultyAttendance";
+import FacultyStudents from "./../../features/faculty/pages/FacultyStudents";
+import FacultyAssignments from "./../../features/faculty/pages/FacultyAssignments";
+import FacultySchedule from "./../../features/faculty/pages/FacultySchedule";
 
 const FacultyDashBoard = () => {
   const [showNotificationModal, setShowNotificationModal] = useState(false);

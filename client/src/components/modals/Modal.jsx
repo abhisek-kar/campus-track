@@ -5,7 +5,7 @@ const Modal = ({ children, onClose, showModal, widthNheight }) => {
     return null; // Don't render anything if the modal is closed
   }
   return (
-    <div className="fixed left-0 right-0 top-0 bottom-0 flex flex-col items-center bg-gray-700 bg-opacity-40">
+    <div className="fixed left-0 right-0 top-0 bottom-0 flex flex-col items-center bg-gray-700 bg-opacity-5 z-[1000]">
       <div
         className={`bg-white  shadow-2xl shadow-gray-600 rounded-md mt-10  ${
           widthNheight ? widthNheight : "w-2/4 h-2/4"

@@ -7,7 +7,7 @@ const SideBar = ({ data }) => {
   const { id } = useParams();
 
   return (
-    <div className="min-h-screen px-4  bg-white  relative ">
+    <div className="h-full px-4  bg-white   fixed  z-50 ">
       {/* brand name */}
       <div className="text-xl font-bold tracking-wider pt-5 text-center mb-10">
         <Link to={"/"}>CAMPUS TRACK</Link>
