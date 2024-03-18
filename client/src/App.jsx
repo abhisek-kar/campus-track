@@ -1,26 +1,28 @@
 // eslint-disable-next-line
 
-import React, { useState } from "react";
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import Login from "./features/auth/pages/Login";
 import PageNotFound from "./pages/PageNotFound";
-import UnAuthorizedPage from "./pages/UnAuthorizedPage";
-import StudentDashBoard from "./components/dashboard/StudentDashBoard";
-import FacultyDashBoard from "./components/dashboard/FacultyDashBoard";
-import AdminDashBoard from "./components/dashboard/AdminDashBoard";
 import { Toaster } from "react-hot-toast";
 import AdminAddStudent from "./features/admin/pages/AdminAddStudent";
 import AdminAddFaculty from "./features/admin/pages/AdminAddFaculty";
 import AdminFaculties from "./features/admin/pages/AdminFaculties";
 import AdminStudents from "./features/admin/pages/AdminStudents";
 import AdminHome from "./features/admin/pages/AdminHome";
+import StudentHome from "./features/student/pages/StudentHome";
+import StudentAttendance from "./features/student/pages/StudentAttendance";
+import StudentAcademy from "./features/student/pages/StudentAcademy";
+import StudentPerformance from "./features/student/pages/StudentPerformance";
+import StudentSchedule from "./features/student/pages/StudentSchedule";
+import FacultyHome from "./features/faculty/pages/FacultyHome";
+import FacultyAttendance from "./features/faculty/pages/FacultyAttendance";
+import FacultyStudents from "./features/faculty/pages/FacultyStudents";
+import FacultyAssignments from "./features/faculty/pages/FacultyAssignments";
+import FacultySchedule from "./features/faculty/pages/FacultySchedule";
 
 const App = () => {
-  let [isAuthentcatedAsStudent, setIsAuthentcatedAsStudent] = useState(true);
-  let [isAuthentcatedAsFaculty, setIsAuthentcatedAsFaculty] = useState(true);
-  let [isAuthentcatedAsAdmin, setIsAuthentcatedAsAdmin] = useState(true);
-
   return (
     <>
       <Toaster />
@@ -29,38 +31,26 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
 
-        {/* private routes */}
+        {/* admin routes */}
+        <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin/add-student" element={<AdminAddStudent />} />
+        <Route path="/admin/add-faculty" element={<AdminAddFaculty />} />
+        <Route path="/admin/faculties" element={<AdminFaculties />} />
+        <Route path="/admin/students" element={<AdminStudents />} />
 
-        {/* allow student routes if authenticated  */}
-        <Route
-          path="/student/:id/*"
-          element={
-            isAuthentcatedAsStudent ? (
-              <StudentDashBoard />
-            ) : (
-              <UnAuthorizedPage />
-            )
-          }
-        />
-        {/* allow admin routes if authenticated  */}
+        {/* student routes */}
+        <Route path="/student" element={<StudentHome />} />
+        <Route path="/student/attendance" element={<StudentAttendance />} />
+        <Route path="/student/academy" element={<StudentAcademy />} />
+        <Route path="/student/performance" element={<StudentPerformance />} />
+        <Route path="/student/schedule" element={<StudentSchedule />} />
 
-        <Route path="/admin/:id" element={<AdminHome />} />
-        <Route path="/admin/:id/add-student" element={<AdminAddStudent />} />
-        <Route path="/admin/:id/add-faculty" element={<AdminAddFaculty />} />
-        <Route path="/admin/:id/faculties" element={<AdminFaculties />} />
-        <Route path="/admin/:id/students" element={<AdminStudents />} />
-
-        {/* allow faculty routes if authenticated  */}
-        <Route
-          path="/faculty/:id/*"
-          element={
-            isAuthentcatedAsFaculty ? (
-              <FacultyDashBoard />
-            ) : (
-              <UnAuthorizedPage />
-            )
-          }
-        />
+        {/* faculty routes */}
+        <Route path="/faculty" element={<FacultyHome />} />
+        <Route path="/faculty/attendance" element={<FacultyAttendance />} />
+        <Route path="/faculty/students" element={<FacultyStudents />} />
+        <Route path="/faculty/assignments" element={<FacultyAssignments />} />
+        <Route path="/faculty/schedule" element={<FacultySchedule />} />
 
         {/* page not found  */}
         <Route path="*" element={<PageNotFound />} />

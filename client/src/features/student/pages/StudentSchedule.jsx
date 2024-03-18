@@ -1,7 +1,8 @@
 import React from "react";
+import StudentDashBoard from "../../../components/dashboard/StudentDashBoard";
 
 const StudentSchedule = () => {
-  return <div>schedule data</div>;
+  return <StudentDashBoard>schedule data</StudentDashBoard>;
 };
 
 export default StudentSchedule;

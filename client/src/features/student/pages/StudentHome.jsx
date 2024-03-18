@@ -1,7 +1,8 @@
 import React from "react";
+import StudentDashBoard from "../../../components/dashboard/StudentDashBoard";
 
 const StudentHome = () => {
-  return <div>home data</div>;
+  return <StudentDashBoard>home data</StudentDashBoard>;
 };
 
 export default StudentHome;

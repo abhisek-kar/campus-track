@@ -2,15 +2,9 @@ import React, { useState } from "react";
 import SideBar from "../SideBar";
 import { facultySidebarData } from "../../services/sidebarData/facultySidebarData";
 import StudentNotificationModal from "../modals/StudentNotificationModal";
-import { Routes, Route } from "react-router-dom";
 import DashboardHeader from "./DashboardHeader";
-import FacultyHome from "./../../features/faculty/pages/FacultyHome";
-import FacultyAttendance from "./../../features/faculty/pages/FacultyAttendance";
-import FacultyStudents from "./../../features/faculty/pages/FacultyStudents";
-import FacultyAssignments from "./../../features/faculty/pages/FacultyAssignments";
-import FacultySchedule from "./../../features/faculty/pages/FacultySchedule";
 
-const FacultyDashBoard = () => {
+const FacultyDashBoard = ({ children }) => {
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   return (
     <div className="grid grid-cols-[260px,1fr]">
@@ -27,15 +21,8 @@ const FacultyDashBoard = () => {
           userName={"Faculty Name"}
         />
         {/* 2nd part of right part - 1fr */}
-        <div className="">
-          {/* faculty dashboard routes */}
-          <Routes>
-            <Route path="" element={<FacultyHome />} />
-            <Route path="attendance" element={<FacultyAttendance />} />
-            <Route path="students" element={<FacultyStudents />} />
-            <Route path="assignments" element={<FacultyAssignments />} />
-            <Route path="schedule" element={<FacultySchedule />} />
-          </Routes>
+        <div className="absolute ml-[200px] mt-[60px] w-[calc(100%-210px)] p-2">
+          {children}
         </div>
       </div>
       {/* modal shoowing all notification for students */}

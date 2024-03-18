@@ -1,21 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
-import {
-  BiSolidDownArrow,
-  BiSolidUpArrow,
-  BiSolidRightArrowAlt,
-} from "react-icons/bi";
 import { ReactComponent as College } from "../assets/svg/College.svg";
-
-let roles = [{ role: "student" }, { role: "faculty" }, { role: "admin" }];
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [showAllLogins, setShowAllLogins] = useState(false);
-  useEffect(() => {
-    // setShowAllLogins(false);
-  });
 
   return (
     <div
@@ -27,50 +15,21 @@ const HomePage = () => {
       }}
     >
       {/* header */}
-      <div className="flex justify-between items-center relative">
+      <div className="flex justify-between items-center px-5">
         {/* brand name */}
         <Link
           to={"/"}
-          className="text-2xl font-bold tracking-wider p-2 flex  justify-center items-center"
+          className="text-2xl poppins-bold tracking-wide  flex  justify-center items-center"
         >
           CAMPUS TRACK{" "}
         </Link>
         {/* login buttons */}
-
-        {!showAllLogins ? (
-          <div className="w-32 mr-2 flex items-center justify-between gap-1  bg-themeBlue text-white py-1 px-2 rounded-sm">
-            <span className="font-semibold text-xl ">Login</span>
-            <BiSolidDownArrow
-              className="cursor-pointer"
-              onClick={(e) => setShowAllLogins(true)}
-            />
-          </div>
-        ) : (
-          <div className=" absolute right-2 top-2 shadow-xl shadow-gray-800">
-            <div className="w-32 flex items-center justify-between gap-1 bg-themeBlue text-white py-1 px-2 rounded-sm">
-              <span className="font-semibold text-white text-xl ">Login</span>
-              <BiSolidUpArrow
-                className="cursor-pointer "
-                onClick={(e) => setShowAllLogins(false)}
-              />
-            </div>
-            {roles.map((item, idx) => {
-              return (
-                <div
-                  onClick={(e) => {
-                    navigate(`/login?role=${item.role}`);
-                  }}
-                  className="w-32 flex items-center justify-between gap-1 cursor-pointer  hover:text-white hover:bg-themeBlue py-1 px-2 rounded-sm "
-                >
-                  <span className="font-semibold text-xl ">
-                    {item.role.charAt(0).toUpperCase() + item.role.slice(1)}
-                  </span>
-                  <BiSolidRightArrowAlt className="" />
-                </div>
-              );
-            })}
-          </div>
-        )}
+        <button
+          onClick={() => navigate("/login")}
+          className="bg-themeBlue hover:opacity-80 py-1 px-2 text-white poppins-medium tracking-wide rounded"
+        >
+          Login
+        </button>
       </div>
 
       {/* body */}

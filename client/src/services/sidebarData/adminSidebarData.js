@@ -8,27 +8,27 @@ export const adminSidebarData = [
   {
     title: "Home",
     icon: <AiFillHome className="w-5 h-5 " />,
-    link: "/admin/:id",
+    link: "/admin",
   },
   {
     title: "Students",
     icon: <PiStudentFill className="w-5 h-5 " />,
-    link: "/admin/:id/students",
+    link: "/admin/students",
   },
   {
     title: "Faculties",
     icon: <FaChalkboardTeacher className="w-5 h-5 " />,
-    link: "/admin/:id/faculties",
+    link: "/admin/faculties",
   },
 
   {
     title: "Add Student",
     icon: <IoPersonAddSharp className="w-5 h-5 " />,
-    link: "/admin/:id/add-student",
+    link: "/admin/add-student",
   },
   {
     title: "Add Faculty",
     icon: <IoIosPersonAdd className="w-5 h-5 " />,
-    link: "/admin/:id/add-faculty",
+    link: "/admin/add-faculty",
   },
 ];

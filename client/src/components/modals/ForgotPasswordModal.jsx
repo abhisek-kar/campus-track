@@ -30,11 +30,11 @@ const ForgotPasswordModal = ({ showModal, onClose }) => {
               <button
                 onClick={handleVerifyCode}
                 type="submit"
-                className=" w-full mt-10 flex items-center justify-center  rounded-md hover:bg-opacity-90 bg-themeBlue p-2   text-white font-mono font-semibold tracking-wide "
+                className=" w-full mt-10 flex items-center justify-center  rounded-md hover:bg-opacity-90 bg-themeBlue p-2   text-white poppins-medium tracking-wide "
               >
                 Verify Code
               </button>
-              <div className="text-themeBlue  font-medium  flex flex-row-reverse">
+              <div className="text-themeBlue  poppins-medium  flex flex-row-reverse">
                 <span onClick={handleResendCode} className="cursor-pointer">
                   Resend Code
                 </span>
@@ -53,7 +53,7 @@ const ForgotPasswordModal = ({ showModal, onClose }) => {
               <button
                 onClick={handleSendVerificationCode}
                 type="submit"
-                className="w-full flex items-center justify-center  rounded-md hover:bg-opacity-90 bg-themeBlue p-2   text-white font-mono font-semibold tracking-wide "
+                className="w-full flex items-center justify-center  rounded-md hover:bg-opacity-90 bg-themeBlue p-2   text-white poppins-medium tracking-wide "
               >
                 Send Verification Code
               </button>

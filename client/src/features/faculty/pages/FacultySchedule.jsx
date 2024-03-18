@@ -1,7 +1,8 @@
 import React from "react";
+import FacultyDashBoard from "../../../components/dashboard/FacultyDashBoard";
 
 const FacultySchedule = () => {
-  return <div>FacultySchedule</div>;
+  return <FacultyDashBoard>FacultySchedule</FacultyDashBoard>;
 };
 
 export default FacultySchedule;

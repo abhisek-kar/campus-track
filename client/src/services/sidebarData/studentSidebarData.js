@@ -8,26 +8,26 @@ export const studentSidebarData = [
   {
     title: "Home",
     icon: <AiFillHome className="w-5 h-5 " />,
-    link: "/student/:id",
+    link: "/student",
   },
   {
     title: "Academy",
     icon: <PiChalkboardTeacherFill className="w-5 h-5 " />,
-    link: "/student/:id/academy",
+    link: "/student/academy",
   },
   {
     title: "Attendance",
     icon: <BsCardChecklist className="w-5 h-5 " />,
-    link: "/student/:id/attendance",
+    link: "/student/attendance",
   },
   {
     title: "Performance",
     icon: <GiProgression className="w-5 h-5 " />,
-    link: "/student/:id/performance",
+    link: "/student/performance",
   },
   {
     title: "Schedule",
     icon: <MdSchedule className="w-5 h-5 " />,
-    link: "/student/:id/schedule",
+    link: "/student/schedule",
   },
 ];

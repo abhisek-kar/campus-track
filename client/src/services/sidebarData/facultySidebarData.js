@@ -8,26 +8,26 @@ export const facultySidebarData = [
   {
     title: "Home",
     icon: <AiFillHome className="w-5 h-5 " />,
-    link: "/faculty/:id",
+    link: "/faculty",
   },
   {
     title: "Attendance",
     icon: <BsCardChecklist className="w-5 h-5 " />,
-    link: "/faculty/:id/attendance",
+    link: "/faculty/attendance",
   },
   {
     title: "Students",
     icon: <PiStudentFill className="w-5 h-5 " />,
-    link: "/faculty/:id/students",
+    link: "/faculty/students",
   },
   {
     title: "Assignments",
     icon: <PiExam className="w-5 h-5 " />,
-    link: "/faculty/:id/assignments",
+    link: "/faculty/assignments",
   },
   {
     title: "Schedule",
     icon: <MdSchedule className="w-5 h-5 " />,
-    link: "/faculty/:id/schedule",
+    link: "/faculty/schedule",
   },
 ];

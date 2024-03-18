@@ -7,40 +7,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Loader from "./../../../components/Loader";
 import ForgotPasswordModal from "./../../../components/modals/ForgotPasswordModal";
-import StudentRegister from "./../../../components/auth/StudentRegister";
-import FacultyRegister from "./../../../components/auth/FacultyRegister";
-import AdminRegister from "./../../../components/auth/AdminRegister";
 import { loginUser } from "./../../../redux/auth/authSlices";
 import InputBox from "./../../../components/InputBox";
 
+const roles = ["student", "faculty", "admin"];
 const Login = () => {
-  const { loading } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
+  const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [resetPassword, setResetPassword] = useState(false);
-  const [isRegisterPage, setIsRegisterPage] = useState(false);
 
-  useEffect(() => {
-    // Create a URLSearchParams object from the current URL
-    const searchParams = new URLSearchParams(window.location.search);
-    // Access a specific query parameter by name
-    const userRole = searchParams.get("role");
-    if (!userRole) {
-      window.location.replace("/");
-    }
-    setRole(userRole);
-  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
+    if (!mail || !password) {
       toast.error("All fields are mandatory", { duration: 2000 });
       return;
     }
-    dispatch(loginUser({ email, password, role }));
-    setEmail("");
+    dispatch(loginUser({ mail, password, role }));
+    setMail("");
     setPassword("");
   };
   return (
@@ -55,91 +40,77 @@ const Login = () => {
         <LoginSVG className="w-full h-full" />
       </div>
       {/* login side */}
-      {!isRegisterPage ? (
-        <form
-          onSubmit={handleSubmit}
-          className=" min-h-screen w-full flex flex-col  justify-center items-center p-3 "
-          style={{ backgroundColor: "white" }}
-        >
-          <div className=" font-mono text-2xl mt-1 mb-5 font-semibold tracking-wider text-gray-700 border-b-2 border-gray-600">
-            {role && role.charAt(0).toUpperCase() + role.slice(1)} Login
-          </div>
-          <InputBox
-            placeholder={"e.g xyz@gmail.com"}
-            labelName={"Your Email"}
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-          {/* password */}
-          <div className="mt-2 mb-3 w-full relative">
-            <label
-              htmlFor=""
-              className="font-semibold text-lg  text-gray-600 tracking-wide "
-            >
-              Enter password
-            </label>
+      <form
+        onSubmit={handleSubmit}
+        className=" min-h-screen w-full flex flex-col  justify-center items-center p-3 "
+        style={{ backgroundColor: "white" }}
+      >
+        <div className="poppins-medium text-2xl mb-10 ">Please Login !</div>
+        {/* roles */}
+        <div className="flex gap-5 mb-5">
+          {roles?.map((item) => {
+            return (
+              <label
+                className="poppins-medium text-lg inline-flex items-center gap-2 "
+                key={item}
+              >
+                <input
+                  type="radio"
+                  value={item}
+                  checked={role === item}
+                  onChange={(e) => setRole(e.target.value)}
+                  className="form-themeBlue h-5 w-5 text-themeBlue focus:ring-themeBlue bg-themeBlue "
+                />
+                {item.charAt(0).toUpperCase() + item.slice(1)}
+              </label>
+            );
+          })}
+        </div>
+        <InputBox
+          placeholder={"e.g xyz@gmail.com"}
+          labelName={"Your Email"}
+          value={mail}
+          onChange={(e) => {
+            setMail(e.target.value);
+          }}
+        />
 
-            <input
-              value={password}
-              type={showPassword ? "text" : "password"}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border-[3px] border-themeBlue mt-1 p-3 rounded-md w-full tracking-wide font-mono  focus:outline-0 focus:border-2 focus:border-themeBlue"
-              placeholder={"*********"}
-            />
-            {showPassword ? (
-              <AiFillEyeInvisible
-                className="absolute top-[60%] right-4 w-5 h-5 cursor-pointer"
-                onClick={() => setShowPassword(!showPassword)}
-              />
-            ) : (
-              <AiFillEye
-                className="absolute top-[60%] right-4 w-5 h-5 cursor-pointer"
-                onClick={() => setShowPassword(!showPassword)}
-              />
-            )}
-          </div>
+        <InputBox
+          placeholder={"*********"}
+          labelName={"Enter Password"}
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+        />
 
-          <div className=" w-full flex justify-end mr-5  mb-10">
-            <Link
-              className="text-themeBlue font-mono "
-              onClick={() => setResetPassword(true)}
-            >
-              Forgot Password?
-            </Link>
-          </div>
-          {/* submit button */}
-          <button
-            type="submit"
-            className="w-full  flex items-center justify-center shadow-lg shadow-gray-800 rounded-full hover:bg-opacity-90 bg-themeBlue p-2   text-white font-mono font-semibold tracking-wide text-xl"
+        <div className=" w-full flex justify-end mr-5  mb-10">
+          <Link
+            className="text-themeBlue poppins-medium-italic "
+            onClick={() => setResetPassword(true)}
           >
-            <span className="flex-1 text-center">Login</span>
-            <FiArrowRightCircle className="mr-3" />
-          </button>
-          <div className="mt-3 text-themeBlue">
+            Forgot Password?
+          </Link>
+        </div>
+        {/* submit button */}
+        <button
+          type="submit"
+          className="w-full  flex items-center justify-center shadow-lg shadow-gray-800 rounded-full hover:bg-opacity-90 bg-themeBlue p-2   text-white poppins-medium tracking-wide text-xl"
+        >
+          <span className="flex-1 text-center">Login</span>
+          <FiArrowRightCircle className="mr-3" />
+        </button>
+        {/* <div className="mt-3 text-themeBlue poppins-regular">
             Not Registered Yet?{" "}
             <span
-              className="font-semibold cursor-pointer "
+              className="font-semibold poppins-medium cursor-pointer "
               onClick={(e) => setIsRegisterPage(true)}
             >
               please Sign Up
             </span>
-          </div>
-        </form>
-      ) : null}
-      {/* register pages rollwise */}
-      {isRegisterPage && role === "student" ? (
-        <StudentRegister onClick={() => setIsRegisterPage(false)} />
-      ) : null}
-      {isRegisterPage && role === "faculty" ? (
-        <FacultyRegister onClick={() => setIsRegisterPage(false)} />
-      ) : null}
-      {isRegisterPage && role === "admin" ? (
-        <AdminRegister onClick={() => setIsRegisterPage(false)} />
-      ) : null}
-      {/* showing loader */}
-      {loading ? <Loader /> : null}
+          </div> */}
+      </form>
+
       {/* showing reset password component  */}
       {resetPassword ? (
         <ForgotPasswordModal
