@@ -34,17 +34,20 @@ const InputBox = ({ labelName, onChange, type, placeholder, value }) => {
           className="border-[3px] border-themeBlue mt-1 p-3 rounded-md w-full tracking-wide poppins-regular focus:outline-0 focus:border-2 focus:border-themeBlue"
           placeholder={"*********"}
         />
-        {showPassword ? (
-          <AiFillEyeInvisible
-            className="absolute   w-5 h-5 cursor-pointer "
-            onClick={() => setShowPassword(!showPassword)}
-          />
-        ) : (
-          <AiFillEye
-            className="absolute   w-5 h-5 cursor-pointer"
-            onClick={() => setShowPassword(!showPassword)}
-          />
-        )}
+        <div className="w-full flex justify-end -mt-10 pr-3">
+          {" "}
+          {showPassword ? (
+            <AiFillEye
+              className=" w-5 h-5 cursor-pointer  "
+              onClick={() => setShowPassword(!showPassword)}
+            />
+          ) : (
+            <AiFillEyeInvisible
+              className="   w-5 h-5 cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+            />
+          )}
+        </div>
       </div>
     );
   }

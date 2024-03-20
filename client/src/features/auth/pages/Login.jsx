@@ -76,6 +76,7 @@ const Login = () => {
         />
 
         <InputBox
+          type={"password"}
           placeholder={"*********"}
           labelName={"Enter Password"}
           value={password}
@@ -84,7 +85,7 @@ const Login = () => {
           }}
         />
 
-        <div className=" w-full flex justify-end mr-5  mb-10">
+        <div className=" w-full flex justify-end mr-5 mt-2 mb-10">
           <Link
             className="text-themeBlue poppins-medium-italic "
             onClick={() => setResetPassword(true)}
