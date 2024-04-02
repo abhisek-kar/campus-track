@@ -34,7 +34,7 @@ const InputBox = ({ labelName, onChange, type, placeholder, value }) => {
           className="border-[3px] border-themeBlue mt-1 p-3 rounded-md w-full tracking-wide poppins-regular focus:outline-0 focus:border-2 focus:border-themeBlue"
           placeholder={"*********"}
         />
-        <div className="w-full flex justify-end -mt-10 pr-3">
+        <div className="w-full flex justify-end -mt-9 pr-4">
           {" "}
           {showPassword ? (
             <AiFillEye

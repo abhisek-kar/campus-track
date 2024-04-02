@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import UserModal from "./modals/LogoutModal";
 
-const SideBar = ({ data }) => {
+const SideBar = ({ data, role }) => {
   let location = useLocation();
   let navigate = useNavigate();
+  const [showUserModal, setShowUserModal] = useState(false);
 
   return (
     <div className="h-full px-4  bg-white   fixed  z-50 ">
       {/* brand name */}
-      <div className=" pt-5 text-center mb-10">
-        <Link to={"/"} className="text-xl poppins-bold tracking-wide ">
+      <div className="w-full pt-5 text-center mb-10">
+        <Link to={"/"} className="text-xl poppins-bold tracking-wide block ">
           CAMPUS TRACK{" "}
         </Link>
+        <span className="poppins-medium-italic text-sm bg-blue-400 px-2 py-1 rounded-full tracking-wide t">
+          {role}
+        </span>
       </div>
       <div className="flex flex-col justify-between gap-36 py-2">
         {/* sidebar links */}
@@ -48,14 +53,22 @@ const SideBar = ({ data }) => {
         {/* logout button */}
 
         <button
-          onClick={(e) => {
-            window.location.replace("/");
-          }}
+          onClick={() => setShowUserModal(true)}
           className="   bg-red-600 hover:opacity-90 poppins-medium text-white text-lg p-1 rounded-full w-full "
         >
           Logout
         </button>
       </div>
+      {showUserModal ? (
+        <UserModal
+          handleSubmit={(e) => {
+            window.location.replace("/");
+          }}
+          onClose={() => setShowUserModal(false)}
+        />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

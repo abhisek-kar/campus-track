@@ -3,6 +3,7 @@ import { BsCardChecklist } from "react-icons/bs";
 import { PiStudentFill } from "react-icons/pi";
 import { MdSchedule } from "react-icons/md";
 import { PiExam } from "react-icons/pi";
+import { MdTask } from "react-icons/md";
 
 export const facultySidebarData = [
   {
@@ -26,8 +27,8 @@ export const facultySidebarData = [
     link: "/faculty/assignments",
   },
   {
-    title: "Schedule",
-    icon: <MdSchedule className="w-5 h-5 " />,
-    link: "/faculty/schedule",
+    title: "Submissions",
+    icon: <MdTask className="w-5 h-5 " />,
+    link: "/faculty/submissions",
   },
 ];

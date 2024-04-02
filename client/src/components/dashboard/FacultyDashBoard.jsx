@@ -9,7 +9,7 @@ const FacultyDashBoard = ({ children }) => {
   return (
     <div className="grid grid-cols-[260px,1fr]">
       {/* sidebar */}
-      <SideBar data={facultySidebarData} />
+      <SideBar role={"Faculty"} data={facultySidebarData} />
       {/* right part */}
       <div className="grid grid-rows-[50px,1fr]">
         {/* 1st child of right part - 50px */}

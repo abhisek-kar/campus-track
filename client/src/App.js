@@ -20,12 +20,14 @@ import FacultyHome from "./features/faculty/pages/FacultyHome";
 import FacultyAttendance from "./features/faculty/pages/FacultyAttendance";
 import FacultyStudents from "./features/faculty/pages/FacultyStudents";
 import FacultyAssignments from "./features/faculty/pages/FacultyAssignments";
-import FacultySchedule from "./features/faculty/pages/FacultySchedule";
+import { Tooltip } from "react-tooltip";
+import FacultySubmission from "./features/faculty/pages/FacultySubmission";
 
 const App = () => {
   return (
     <>
       <Toaster />
+      {/* <Tooltip /> */}
       <Routes>
         {/* public routes */}
         <Route path="/" element={<HomePage />} />
@@ -50,7 +52,7 @@ const App = () => {
         <Route path="/faculty/attendance" element={<FacultyAttendance />} />
         <Route path="/faculty/students" element={<FacultyStudents />} />
         <Route path="/faculty/assignments" element={<FacultyAssignments />} />
-        <Route path="/faculty/schedule" element={<FacultySchedule />} />
+        <Route path="/faculty/submissions" element={<FacultySubmission />} />
 
         {/* page not found  */}
         <Route path="*" element={<PageNotFound />} />

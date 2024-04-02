@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Table from "../../../components/Table";
 import AdminDashBoard from "../../../components/dashboard/AdminDashBoard";
 import { useNavigate } from "react-router-dom";
+import { IoMdAdd } from "react-icons/io";
 
 const AdminStudents = () => {
   const navigate = useNavigate();
@@ -127,9 +128,10 @@ const AdminStudents = () => {
     <AdminDashBoard>
       <div className="w-full flex justify-end mb-2">
         <button
-          onClick={() => navigate("/admin/:id/add-student")}
+          onClick={() => navigate("/admin/add-student")}
           className="poppins-medium text-white bg-themeBlue p-2 tracking-wide rounded hover:bg-opacity-90"
         >
+          <IoMdAdd className="inline text-xl mr-2 " />
           Add New Student
         </button>
       </div>
