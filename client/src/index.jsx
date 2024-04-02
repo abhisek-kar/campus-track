@@ -7,13 +7,16 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import "./fonts.css";
-
+import "react-tooltip/dist/react-tooltip.css";
+import { TooltipProvider } from "react-tooltip";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <App />
+        <TooltipProvider>
+          <App />
+        </TooltipProvider>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>

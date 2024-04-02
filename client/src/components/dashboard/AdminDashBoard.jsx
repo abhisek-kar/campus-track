@@ -9,7 +9,7 @@ const AdminDashBoard = ({ children }) => {
   return (
     <div className="grid grid-cols-[1fr, 5fr]">
       {/* sidebar */}
-      <SideBar data={adminSidebarData} />
+      <SideBar role={"Admin"} data={adminSidebarData} />
       {/* right part */}
       <div className="w-full">
         <DashboardHeader

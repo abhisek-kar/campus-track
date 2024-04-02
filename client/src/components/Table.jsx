@@ -12,7 +12,9 @@ const Table = ({ tableData, tableHeadData }) => {
     columns,
     data,
     enableColumnFilters: false,
-    paginationDisplayMode: "pages",
+    enablePagination: false,
+    enableBottomToolbar: false,
+
     muiPaginationProps: {
       color: "primary",
       shape: "rounded",
@@ -34,23 +36,24 @@ export default Table;
 // Components to show Edit button inside the table
 export function Edit() {
   return (
-    <div className="flex  items-center gap-2 text-theme-blue poppins-medium underline cursor-pointer font-semibold">
+    <div className="flex  items-center gap-2 text-blue-500 poppins-bold underline cursor-pointer font-semibold">
       <RiEdit2Line /> Edit
     </div>
   );
 }
 
 // component to show the status - Active || Inactive inside the table
-export function Badge({ status = "active" }) {
+export function Badge({ status = "Active" }) {
   return (
-    <div
+    <button
+      disabled
       className={`rounded-md ${
-        status === "active"
+        status === "Active"
           ? "bg-green-200 text-green-700"
           : "bg-red-200 text-red-700"
-      } poppins-medium text-xs w-fit px-2 py-1`}
+      } poppins-medium text-xs w-20 px-2 py-1 `}
     >
-      {status.charAt(0).toUpperCase() + status.slice(1)}
-    </div>
+      {status}
+    </button>
   );
 }
