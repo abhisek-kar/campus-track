@@ -7,12 +7,12 @@ const AdminHome = () => {
     <AdminDashBoard>
       {/* boxes */}
 
-      <div className="flex gap-2 w-full mt-5 justify-evenly">
+      <div className="flex gap-2 w-full mt-20 justify-evenly">
         <Box boxName={"Total Students"} boxCount={230} />
         <Box boxName={"Total Faculties"} boxCount={18} />
         <Box boxName={"Total Courses"} boxCount={55} />
       </div>
-      <div className="mt-5 w-full ml-auto">
+      {/* <div className="mt-5 w-full ml-auto">
         <Chart
           label1={"1st yr"}
           label2={"2nd yr"}
@@ -38,7 +38,7 @@ const AdminHome = () => {
             "DEC",
           ]}
         />
-      </div>
+      </div> */}
     </AdminDashBoard>
   );
 };

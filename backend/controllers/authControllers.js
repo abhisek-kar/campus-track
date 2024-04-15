@@ -7,15 +7,16 @@ const StudentModel = require("../models/StudentModel");
 // register controller
 exports.registerController = async (req, res) => {
   try {
-    const { role } = req.body;
+    console.log(req.body);
+    const { role, email, password } = req.body;
     // check existing user
     let user;
     if (role === "admin") {
-      user = await AdminModel.findOne({ email });
+      user = await AdminModel.findOne({ email: email });
     } else if (role === "faculty") {
-      user = await FacultyModel.findOne({ email });
-    } else {
-      user = await StudentModel.findOne({ email });
+      user = await FacultyModel.findOne({ email: email });
+    } else if (role === "student") {
+      user = await StudentModel.findOne({ email: email });
     }
     if (user) {
       return res.status(400).json({
@@ -33,27 +34,37 @@ exports.registerController = async (req, res) => {
         ...req.body,
         password: hashedPassword,
       });
+      await newUser.populate("department");
+
+      await newUser.save();
     } else if (role === "faculty") {
       newUser = new FacultyModel({
         ...req.body,
         password: hashedPassword,
       });
+      await newUser.save();
     } else {
       newUser = new StudentModel({
         ...req.body,
         password: hashedPassword,
       });
+      await newUser.save();
     }
     // create new user
 
-    await newUser.save();
-
     return res.status(201).json({
       success: true,
-      message: "User Created Successfully, login",
+      message: `${role} Created Successfully`,
+      user: newUser,
     });
   } catch (error) {
     console.log(error);
+    if (error.code === 11000 && error.keyPattern && error.keyPattern.mail) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already exists, please use a different email",
+      });
+    }
     return res.status(500).json({
       success: false,
       message: "Error In Register API",
@@ -74,11 +85,11 @@ exports.loginController = async (req, res) => {
     }
     let user;
     if (role === "admin") {
-      user = await AdminModel.findOne({ email });
+      user = await AdminModel.findOne({ email }).populate("department");
     } else if (role === "faculty") {
-      user = await FacultyModel.findOne({ email });
+      user = await FacultyModel.findOne({ email }).populate("department");
     } else {
-      user = await StudentModel.findOne({ email });
+      user = await StudentModel.findOne({ email }).populate("department");
     }
     if (!user) {
       return res.status(404).json({
@@ -87,11 +98,11 @@ exports.loginController = async (req, res) => {
       });
     }
     // compare password
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({
         success: false,
-        message: "Invalid Credential",
+        message: "Invalid Credentials",
       });
     }
     // generate jwt token
@@ -107,12 +118,14 @@ exports.loginController = async (req, res) => {
       secure: process.env.NODE_ENV === "production",
     });
     user.password = undefined;
-    return res.status(201).json({
+    return res.status(200).json({
       success: true,
       message: "Logged in Successfully",
       user,
+      role,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Error In Login API",

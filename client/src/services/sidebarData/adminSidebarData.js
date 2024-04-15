@@ -3,6 +3,7 @@ import { FaChalkboardTeacher } from "react-icons/fa";
 import { PiStudentFill } from "react-icons/pi";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { IoIosPersonAdd } from "react-icons/io";
+import { MdNotificationAdd } from "react-icons/md";
 
 export const adminSidebarData = [
   {
@@ -21,14 +22,14 @@ export const adminSidebarData = [
     link: "/admin/faculties",
   },
 
-  {
-    title: "Add Student",
-    icon: <IoPersonAddSharp className="w-5 h-5 " />,
-    link: "/admin/add-student",
-  },
-  {
-    title: "Add Faculty",
-    icon: <IoIosPersonAdd className="w-5 h-5 " />,
-    link: "/admin/add-faculty",
-  },
+  // {
+  //   title: "Notification",
+  //   icon: <MdNotificationAdd className="w-5 h-5 " />,
+  //   link: "/admin/create-notification",
+  // },
+  // {
+  //   title: "Add Faculty",
+  //   icon: <IoIosPersonAdd className="w-5 h-5 " />,
+  //   link: "/admin/add-faculty",
+  // },
 ];

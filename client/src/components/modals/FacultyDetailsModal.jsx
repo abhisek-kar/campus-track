@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-const StudentDetailsModal = ({ onClose, handleSubmit }) => {
+const FacultyDetailsModal = ({ onClose, handleSubmit }) => {
   const { user } = useSelector((state) => state?.auth);
   return (
     <div className="fixed top-0 right-0 bottom-0 left-0 z-[2147483647]">
@@ -11,7 +11,6 @@ const StudentDetailsModal = ({ onClose, handleSubmit }) => {
       >
         <div
           className="relative p-6 bg-white rounded shadow-md max-w-[90%] max-h-[90%] overflow-auto"
-          // style={{ width: "80%", minWidth: "320px", maxWidth: "452px" }}
           onClick={(e) => e.stopPropagation()}
         >
           {/* heading */}
@@ -32,17 +31,10 @@ const StudentDetailsModal = ({ onClose, handleSubmit }) => {
               <span className="poppins-bold">Email : </span>
               <span className="poppins-medium-italic">{user?.email}</span>
             </div>
+
             <div className="mb-1">
-              <span className="poppins-bold">Year : </span>
-              <span className="poppins-medium-italic">{user?.year}</span>
-            </div>
-            <div className="mb-1">
-              <span className="poppins-bold">Semster : </span>
-              <span className="poppins-medium-italic">{user?.semester}</span>
-            </div>
-            <div className="mb-1">
-              <span className="poppins-bold">Regd. No. : </span>
-              <span className="poppins-medium-italic">{user?.regdNo}</span>
+              <span className="poppins-bold">Mobile No. : </span>
+              <span className="poppins-medium-italic">{user?.mobile}</span>
             </div>
           </div>
           {/* footer */}
@@ -60,4 +52,4 @@ const StudentDetailsModal = ({ onClose, handleSubmit }) => {
   );
 };
 
-export default StudentDetailsModal;
+export default FacultyDetailsModal;

@@ -17,23 +17,18 @@ const router = express.Router();
 //routes
 
 // get all attendances
-router.get("/", isAuthenticated, isFaculty, getAllAttendanceController);
+router.get("/", getAllAttendanceController);
 
 // get  attendance by student id
-router.get(
-  "/:id",
-  isAuthenticated,
-  isFaculty,
-  getAttendanceByStudentIdController
-);
+router.get("/:id", getAttendanceByStudentIdController);
 
 // create attendance
-router.post("/", isAuthenticated, isFaculty, createAttendanceController);
+router.post("/", createAttendanceController);
 
 // delete attendance
-router.delete("/:id", isAuthenticated, isFaculty, deleteAttendanceController);
+router.delete("/:id", deleteAttendanceController);
 
 // update attendance
-router.patch("/:id", isAuthenticated, isFaculty, updateAttendanceController);
+router.patch("/:id", updateAttendanceController);
 
 module.exports = router;

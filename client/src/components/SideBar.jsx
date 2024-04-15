@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import UserModal from "./modals/LogoutModal";
+import LogOutModal from "./modals/LogoutModal";
+import { useDispatch, useSelector } from "react-redux";
+import { clear } from "../features/auth/authSlice";
 
 const SideBar = ({ data, role }) => {
   let location = useLocation();
   let navigate = useNavigate();
+  const dispatch = useDispatch();
   const [showUserModal, setShowUserModal] = useState(false);
 
   return (
@@ -14,7 +18,7 @@ const SideBar = ({ data, role }) => {
         <Link to={"/"} className="text-xl poppins-bold tracking-wide block ">
           CAMPUS TRACK{" "}
         </Link>
-        <span className="poppins-medium-italic text-sm bg-blue-400 px-2 py-1 rounded-full tracking-wide t">
+        <span className="poppins-bold-italic text-sm bg-slate-300 px-2 py-1 rounded-full tracking-wide t">
           {role}
         </span>
       </div>
@@ -54,15 +58,16 @@ const SideBar = ({ data, role }) => {
 
         <button
           onClick={() => setShowUserModal(true)}
-          className="   bg-red-600 hover:opacity-90 poppins-medium text-white text-lg p-1 rounded-full w-full "
+          className=" absolute bottom-10 py-2 left-1  bg-red-600 hover:opacity-90 poppins-medium text-white  p-1 rounded-full w-48 "
         >
           Logout
         </button>
       </div>
       {showUserModal ? (
-        <UserModal
+        <LogOutModal
           handleSubmit={(e) => {
-            window.location.replace("/");
+            dispatch(clear());
+            navigate("/");
           }}
           onClose={() => setShowUserModal(false)}
         />

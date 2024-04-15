@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const UserModal = ({ onClose, handleSubmit }) => {
+const LogOutModal = ({ onClose, handleSubmit }) => {
   return (
     <div className="fixed top-0 right-0 bottom-0 left-0 z-[2147483647]">
       <div
@@ -41,4 +41,4 @@ const UserModal = ({ onClose, handleSubmit }) => {
   );
 };
 
-export default UserModal;
+export default LogOutModal;

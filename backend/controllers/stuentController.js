@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs"); // Assuming you want to hash passwords before saving them
+const StudentModel = require("../models/StudentModel");
 
 // add student
 exports.createStudentController = async (req, res) => {
@@ -101,10 +102,10 @@ exports.updateStudentController = async (req, res) => {
 // get all students
 exports.getAllStudentsController = async (req, res) => {
   try {
-    const allStudents = await StudentModel.find()
-      .populate("department")
-      .populate("courses")
-      .populate("attendance");
+    const allStudents = await StudentModel.find({});
+    // .populate("department")
+    // .populate("courses")
+    // .populate("attendance");
 
     if (!allStudents || allStudents.length === 0) {
       return res.status(404).json({
@@ -119,6 +120,7 @@ exports.getAllStudentsController = async (req, res) => {
       students: allStudents,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Error in student api",

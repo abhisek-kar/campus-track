@@ -101,7 +101,7 @@ exports.updateFacultyController = async (req, res) => {
 // get all faculty details
 exports.getAllFacultyController = async (req, res) => {
   try {
-    const allFaculty = await FacultyModel.find();
+    const allFaculty = await FacultyModel.find().populate("department");
 
     if (!allFaculty || allFaculty.length === 0) {
       return res.status(404).json({

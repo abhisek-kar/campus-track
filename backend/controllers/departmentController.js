@@ -1,11 +1,14 @@
+const DepartmentModel = require("../models/DepartmentModel");
+
 // create department
 exports.createDepartmentController = async (req, res) => {
   try {
-    const { name, admin, faculties } = req.body;
+    const { name, code } = req.body;
 
     // Check if the department name is unique
-    const existingDepartment = await DepartmentModel.findOne({ name });
-
+    const existingDepartment = await DepartmentModel.findOne({
+      $or: [{ code }, { name }],
+    });
     if (existingDepartment) {
       return res.status(400).json({
         success: false,
@@ -13,7 +16,7 @@ exports.createDepartmentController = async (req, res) => {
       });
     }
 
-    const newDepartment = new DepartmentModel({ name, admin, faculties });
+    const newDepartment = new DepartmentModel(req.body);
     await newDepartment.save();
 
     return res.status(201).json({
@@ -25,7 +28,7 @@ exports.createDepartmentController = async (req, res) => {
     console.error(error);
     return res.status(500).json({
       success: false,
-      message: "Error in department api",
+      message: "Error in department API",
     });
   }
 };

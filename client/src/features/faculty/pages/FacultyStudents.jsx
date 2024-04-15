@@ -260,12 +260,6 @@ const FacultyStudents = () => {
           tableHeadData={attendanceTableHeadData}
         />
       </div>
-      {/* submit attendance */}
-      <div className="w-full mt-5 mb-10 flex flex-row-reverse">
-        <button className=" px-3 py-2 tracking-wide poppins-bold text-white bg-themeBlue rounded hover:opacity-90">
-          Submit
-        </button>
-      </div>
     </FacultyDashBoard>
   );
 };

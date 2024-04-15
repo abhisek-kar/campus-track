@@ -3,9 +3,13 @@ import SideBar from "../SideBar";
 import { adminSidebarData } from "../../services/sidebarData/adminSidebarData";
 import StudentNotificationModal from "../modals/StudentNotificationModal";
 import DashboardHeader from "./DashboardHeader";
+import { useModal } from "../../context/modalContext";
+import AdminDetailsModal from "../modals/admin/AdminDetailsModal";
 
 const AdminDashBoard = ({ children }) => {
   const [showNotificationModal, setShowNotificationModal] = useState(false);
+  const { showAdminDeatilsModal, closeAdminDeatilsModal } = useModal();
+
   return (
     <div className="grid grid-cols-[1fr, 5fr]">
       {/* sidebar */}
@@ -29,6 +33,9 @@ const AdminDashBoard = ({ children }) => {
         showModal={showNotificationModal}
         onClose={() => setShowNotificationModal(false)}
       />
+      {showAdminDeatilsModal && (
+        <AdminDetailsModal onClose={closeAdminDeatilsModal} />
+      )}
     </div>
   );
 };

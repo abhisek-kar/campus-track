@@ -13,7 +13,7 @@ const router = express.Router();
 //routes
 
 // get all faculty
-router.get("/", isAuthenticated, isAdmin, getAllFacultyController);
+router.get("/", getAllFacultyController);
 
 // get  faculty details by student id
 router.get("/:id", isAuthenticated, isAdmin, getFacultyByIdController);
@@ -25,6 +25,6 @@ router.post("/", isAuthenticated, isAdmin, createFacultyController);
 router.delete("/:id", isAuthenticated, isAdmin, deleteFacultyController);
 
 // update faculty
-router.patch("/:id", isAuthenticated, isAdmin, updateFacultyController);
+router.patch("/:id", updateFacultyController);
 
 module.exports = router;

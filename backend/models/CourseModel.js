@@ -1,19 +1,15 @@
 const mongoose = require("mongoose");
 
 const courseSchema = new mongoose.Schema({
-  courseName: {
+  name: {
     type: String,
     required: [true, "Course name is requied"],
+    unique: true,
   },
-  courseId: {
+  code: {
     type: String,
     required: [true, "Course id is requied"],
     unique: true,
-  },
-  courseFaculty: {
-    type: mongoose.Schema.ObjectId,
-    ref: "faculty",
-    default: "N/A",
   },
 });
 

@@ -2,13 +2,14 @@ const CourseModel = require("../models/CourseModel");
 
 exports.addCourseController = async (req, res) => {
   try {
-    const { courseId } = req.body;
-    const existingCourse = await CourseModel.findOne({ courseId });
+    console.log(req.body);
+    const { code } = req.body;
+    const existingCourse = await CourseModel.findOne({ code: code });
 
     if (existingCourse) {
       return res.status(400).json({
         success: false,
-        message: `Course with ID ${courseId} already exists`,
+        message: `Course with ID ${code} already exists`,
       });
     }
 

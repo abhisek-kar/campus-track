@@ -5,7 +5,9 @@ import "react-dropdown/style.css";
 import Table from "../../../components/Table";
 
 const FacultyAttendance = () => {
-  const options = ["1st yr", "2nd yr", "3rd yr", "4th yr"];
+  const yearOptions = ["1st yr", "2nd yr", "3rd yr", "4th yr"];
+  const semesterOptions = ["1st", "2nd", "3rd", "4th"];
+  const branchOptions = ["CSE", "CIVIL", "MINING", "MECHANICAL"];
   const [branch, setBranch] = useState("");
   const [year, setYear] = useState("");
   const [semester, setSemester] = useState("");
@@ -63,21 +65,21 @@ const FacultyAttendance = () => {
       {/* dropdown */}
       <div className="flex gap-5">
         <Dropdown
-          options={options}
+          options={branchOptions}
           onChange={(e) => setBranch(e.value)}
           value={branch}
           placeholder="Select Branch"
           className="w-48 rounded "
         />
         <Dropdown
-          options={options}
+          options={yearOptions}
           onChange={(e) => setYear(e.value)}
           value={year}
           placeholder="Select Year"
           className="w-48 rounded "
         />
         <Dropdown
-          options={options}
+          options={semesterOptions}
           onChange={(e) => setSemester(e.value)}
           value={semester}
           placeholder="Select Semester"
@@ -99,6 +101,12 @@ const FacultyAttendance = () => {
           tableData={attendanceTableData}
           tableHeadData={attendanceTableHeadData}
         />
+      </div>
+      {/* submit attendance */}
+      <div className="w-full mt-5 mb-10 flex flex-row-reverse">
+        <button className=" px-3 py-2 tracking-wide poppins-bold text-white bg-themeBlue rounded hover:opacity-90">
+          Submit
+        </button>
       </div>
     </FacultyDashBoard>
   );

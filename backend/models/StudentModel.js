@@ -5,7 +5,7 @@ const studentSchema = new mongoose.Schema({
     type: String,
     required: [true, "Student name is requied"],
   },
-  mail: {
+  email: {
     type: String,
     required: true,
     unique: true,
@@ -25,18 +25,26 @@ const studentSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
+  year: {
+    type: String,
+    required: true,
+  },
+  semester: {
+    type: String,
+    required: true,
+  },
   department: {
     type: mongoose.Schema.ObjectId,
+    ref: "Department",
     required: true,
-    ref: "department",
   },
-  courses: [
-    {
-      type: mongoose.Schema.ObjectId,
-      ref: "courses",
-    },
-  ],
+
+  // courses: [
+  //   {
+  //     type: mongoose.Schema.ObjectId,
+  //     ref: "courses",
+  //   },
+  // ],
 });
 
 module.exports = mongoose.model("Student", studentSchema);
