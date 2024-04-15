@@ -2,26 +2,31 @@ const AttendanceModel = require("../models/AttendanceModel");
 const StudentModel = require("../models/StudentModel");
 
 exports.createAttendanceController = async (req, res) => {
+  // try {
+  // const { id, date, status } = req.body;
+  // const student = await StudentModel.findOne({ _id: id });
+  // if (!student) {
+  //   return res.status(404).json({
+  //     success: true,
+  //     message: "Student not found",
+  //   });
+  // }
+  //   const newAttendance = new AttendanceModel({ student: id, date, status });
+  //   await newAttendance.save();
+  //   return res.status(201).json({
+  //     success: true,
+  //     message: "Attendance created Successfully",
+  //   });
+  // } catch (error) {
+  //   return res.status(500).json({
+  //     success: false,
+  //     message: "Error In attendance API",
+  //   });
+  // }
   try {
-    const { id, date, status } = req.body;
-    const student = await StudentModel.findOne({ _id: id });
-    if (!student) {
-      return res.status(404).json({
-        success: true,
-        message: "Student not found",
-      });
-    }
-    const newAttendance = new AttendanceModel({ student: id, date, status });
-    await newAttendance.save();
-    return res.status(201).json({
-      success: true,
-      message: "Attendance created Successfully",
-    });
+    console.log(req.body);
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Error In attendance API",
-    });
+    console.log(error);
   }
 };
 exports.deleteAttendanceController = async (req, res) => {

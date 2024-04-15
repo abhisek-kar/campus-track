@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const facultySchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Parent name is requied"],
+    required: [true, "Faculty name is requied"],
   },
 
   address: {
@@ -13,7 +13,7 @@ const facultySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  mail: {
+  email: {
     type: String,
     required: true,
   },
@@ -22,9 +22,9 @@ const facultySchema = new mongoose.Schema({
   },
   department: {
     type: mongoose.Schema.ObjectId,
-    ref: "department",
+    ref: "Department",
     required: true,
   },
 });
 
-module.exports = mongoose.model("Parent", facultySchema);
+module.exports = mongoose.model("Faculty", facultySchema);

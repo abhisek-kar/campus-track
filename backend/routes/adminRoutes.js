@@ -19,7 +19,7 @@ router.get("/", isAuthenticated, getAllAdminsController);
 router.get("/:id", isAuthenticated, getAdminByIdController);
 
 // create admin
-router.post("/", isAuthenticated, createAdminController);
+router.post("/", createAdminController);
 
 // delete admin
 router.delete("/:id", isAuthenticated, deleteAdminController);

@@ -26,7 +26,7 @@ const HomePage = () => {
         {/* login buttons */}
         <button
           onClick={() => navigate("/login")}
-          className="bg-themeBlue hover:opacity-80 py-1 px-2 text-white poppins-medium tracking-wide rounded"
+          className="bg-themeBlue hover:opacity-80 py-1 px-2 text-white poppins-medium text-xl tracking-wide rounded"
         >
           Login
         </button>

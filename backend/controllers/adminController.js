@@ -3,10 +3,10 @@ const DepartmentModel = require("../models/DepartmentModel");
 
 exports.createAdminController = async (req, res) => {
   try {
-    const { mail } = req.body;
+    const { email } = req.body;
 
     // Check if the email is unique
-    const existingAdmin = await AdminModel.findOne({ mail });
+    const existingAdmin = await AdminModel.findOne({ email });
 
     if (existingAdmin) {
       return res.status(400).json({

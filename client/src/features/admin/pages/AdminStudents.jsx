@@ -3,109 +3,70 @@ import Table from "../../../components/Table";
 import AdminDashBoard from "../../../components/dashboard/AdminDashBoard";
 import { useNavigate } from "react-router-dom";
 import { IoMdAdd } from "react-icons/io";
+import { RiEdit2Line } from "react-icons/ri";
+import AdminAddStudentModal from "../../../components/modals/admin/AdminAddStudentModal";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
+import API from "../../../services/API";
+import { Spinner } from "../../../components/Loader";
+import { useAdmin } from "../../../context/adminContext";
 
 const AdminStudents = () => {
   const navigate = useNavigate();
-  const [filterOption, setFilterOption] = useState("");
-  const [filterCriteria, setFilterCriteria] = useState("");
-  const [pageNo, setPageNo] = useState(1);
-  // const [filterCriteria, setFilterCriteria] = useState("");
-  const [showAllStudentsModal, setShowStudentsModal] = useState(false);
+  const { currentStudent, setCurrentStudent } = useAdmin();
+  const [showAddStudentsModal, setShowAddStudentsModal] = useState(false);
+  const [showEditStudentsModal, setShowEditStudentsModal] = useState(false);
+  const [studentDetails, setStudentDetails] = useState([]);
+  const [showSpinner, setShowSpinner] = useState(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      setShowSpinner(true);
+      try {
+        const { data } = await API.get("/student");
+        setStudentDetails(data?.students);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setShowSpinner(false);
+      }
+    };
 
-  const filters = ["Year", "Semester", "Attendance", "Registration Number"];
-  const filterData = {
-    Year: ["1st", "2nd", "3rd", "4th"],
-    Semester: ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"],
-    Attendance: [">= 75%", "< 75%"],
-  };
+    fetchData();
 
-  const adminDetails = [
+    return () => {};
+  }, [showAddStudentsModal, showEditStudentsModal]);
+
+  const studentTableHeadData = [
     {
-      firstName: "Abhisek",
-      lastName: "Kar",
-      email: "x@gmail.com",
-      status: "active",
+      accessorKey: "regno",
+      header: "Regd. No",
+      size: 30,
     },
     {
-      firstName: "John",
-      lastName: "Doe",
-      email: "john.doe@example.com",
-      status: "active",
+      accessorKey: "name",
+      header: "Name",
+      size: 100,
     },
     {
-      firstName: "Alice",
-      lastName: "Smith",
-      email: "alice.smith@example.com",
-      status: "inactive",
+      accessorKey: "year",
+      header: "Year",
+      size: 50,
     },
     {
-      firstName: "Bob",
-      lastName: "Johnson",
-      email: "bob.johnson@example.com",
-      status: "active",
-    },
-    {
-      firstName: "Emma",
-      lastName: "Brown",
-      email: "emma.brown@example.com",
-      status: "inactive",
-    },
-    {
-      firstName: "Ryan",
-      lastName: "Garcia",
-      email: "ryan.garcia@example.com",
-      status: "active",
-    },
-    {
-      firstName: "Sophia",
-      lastName: "Lee",
-      email: "sophia.lee@example.com",
-      status: "inactive",
-    },
-    {
-      firstName: "David",
-      lastName: "Miller",
-      email: "david.miller@example.com",
-      status: "active",
-    },
-    {
-      firstName: "Ella",
-      lastName: "Jones",
-      email: "ella.jones@example.com",
-      status: "inactive",
-    },
-    {
-      firstName: "Michael",
-      lastName: "Wang",
-      email: "michael.wang@example.com",
-      status: "active",
-    },
-  ];
-  const adminTableHeadData = [
-    {
-      accessorKey: "no",
-      header: "No",
-      size: 150,
-    },
-    {
-      accessorKey: "firstName",
-      header: "First Name",
-      size: 150,
-    },
-    {
-      accessorKey: "lastName",
-      header: "Last Name",
-      size: 150,
+      accessorKey: "semester",
+      header: "Semester",
+      size: 50,
     },
     {
       accessorKey: "email",
-      header: "Eamil",
-      size: 250,
+      header: "Email",
+      size: 150,
     },
     {
-      accessorKey: "status",
-      header: "Status",
-      size: 150,
+      accessorKey: "attendance",
+      header: "Attendance",
+      size: 200,
     },
     {
       accessorKey: "action",
@@ -114,30 +75,97 @@ const AdminStudents = () => {
     },
   ];
 
-  const adminTableData = adminDetails.map((item, idx) => {
+  const studentTableData = studentDetails.map((item, idx) => {
     return {
-      no: idx < 9 ? "0" + (idx + 1) : idx + 1,
-      firstName: item.firstName,
-      lastName: item.lastName,
-      email: item.email,
-      // status: <Badge status={item.status} />,
-      // action: <Edit />,
+      regno: 2001104065,
+      name: item?.name,
+      year: item?.year,
+      semester: item?.semester,
+      email: item?.email,
+      attendance: (
+        <Badge flag={(item?.attendance / item?.totalAttendance) * 100 >= 75} />
+      ),
+      action: (
+        <Edit
+          onClick={() => {
+            setShowEditStudentsModal(true);
+            setCurrentStudent(item);
+          }}
+        />
+      ),
     };
   });
   return (
     <AdminDashBoard>
-      <div className="w-full flex justify-end mb-2">
+      <div className="w-full flex justify-end mb-5">
         <button
-          onClick={() => navigate("/admin/add-student")}
+          onClick={() => setShowAddStudentsModal(true)}
           className="poppins-medium text-white bg-themeBlue p-2 tracking-wide rounded hover:bg-opacity-90"
         >
           <IoMdAdd className="inline text-xl mr-2 " />
           Add New Student
         </button>
       </div>
-      <Table tableData={adminTableData} tableHeadData={adminTableHeadData} />
+      {showSpinner ? (
+        <div className="w-full justify-center items-center mt-20">
+          <Spinner />
+        </div>
+      ) : (
+        <Table
+          tableData={studentTableData}
+          tableHeadData={studentTableHeadData}
+        />
+      )}
+      {/* Add students Modal */}
+      {showAddStudentsModal && (
+        <AdminAddStudentModal onClose={() => setShowAddStudentsModal(false)} />
+      )}
+      {/* Edit students Modal */}
+      {showEditStudentsModal && (
+        <AdminAddStudentModal
+          onClose={() => setShowEditStudentsModal(false)}
+          edit={true}
+        />
+      )}
     </AdminDashBoard>
   );
 };
 
 export default AdminStudents;
+
+function Edit({ onClick }) {
+  return (
+    <div
+      onClick={onClick}
+      className="flex  items-center gap-2 text-themeBlue poppins-bold underline cursor-pointer font-semibold"
+    >
+      <RiEdit2Line /> Edit
+    </div>
+  );
+}
+
+function Badge({ flag }) {
+  return (
+    <div className="flex ">
+      <button
+        disabled
+        className={`rounded ${
+          flag ? "bg-green-300 text-green-800" : "bg-red-300 text-red-800"
+        } poppins-medium text-xs w-24 px-2 py-1 `}
+      >
+        {flag ? ">= 75%" : "< 75%"}
+      </button>
+      {!flag && (
+        <button
+          className="ml-2 poppins-medium-italic text-sm text-red-600  underline"
+          onClick={() =>
+            (window.location.href =
+              "mailto:recipient@example.com?subject=Hello&body=Hi there,")
+          }
+        >
+          send mail
+        </button>
+      )}
+    </div>
+  );
+}

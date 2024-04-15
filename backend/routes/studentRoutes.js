@@ -13,7 +13,8 @@ const router = express.Router();
 //routes
 
 // get all students
-router.get("/", isAuthenticated, getAllStudentsController);
+router.get("/", getAllStudentsController);
+// router.get("/", isAuthenticated, getAllStudentsController);
 
 // get  student details by student id
 router.get("/:id", isAuthenticated, getStudentByIdController);
@@ -25,6 +26,6 @@ router.post("/", isAuthenticated, isAdmin, createStudentController);
 router.delete("/:id", isAuthenticated, isAdmin, deleteStudentController);
 
 // update attendance
-router.patch("/:id", isAuthenticated, isAdmin, updateStudentController);
+router.patch("/:id", updateStudentController);
 
 module.exports = router;

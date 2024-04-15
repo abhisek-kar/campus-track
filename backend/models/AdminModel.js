@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const adminSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Parent name is requied"],
+    required: [true, "Admin name is requied"],
   },
-  mail: {
+  email: {
     type: String,
     required: true,
     unique: true,
@@ -22,11 +22,10 @@ const adminSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
   department: {
-    type: String,
+    type: mongoose.Schema.ObjectId,
     required: true,
-    ref: "department",
+    ref: "Department",
   },
 });
 

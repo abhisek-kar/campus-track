@@ -19,10 +19,10 @@ router.get("/", isAuthenticated, getAllCoursesController);
 router.get("/:id", isAuthenticated, getCourseByIdController);
 
 // add course
-router.post("/", isAuthenticated, addCourseController);
+router.post("/", addCourseController);
 
 // delete course
-router.delete("/:id", isAuthenticated, deleteCourseController);
+router.delete("/:id", deleteCourseController);
 
 // update course
 router.patch("/:id", isAuthenticated, updateCourseController);

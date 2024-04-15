@@ -73,6 +73,11 @@ const assignmentTableHeadData = [
     size: 50,
   },
   {
+    accessorKey: "branch",
+    header: "Branch",
+    size: 150,
+  },
+  {
     accessorKey: "semester",
     header: "Semester",
     size: 100,
@@ -102,6 +107,7 @@ const assignmentTableHeadData = [
 const aassignmentTableData = assignmentDetails.map((item, idx) => {
   return {
     serial: idx + 1,
+    branch: item?.branch,
     semester: item?.semester,
     courseName: item?.courseName,
     createdOn: item?.createdOn,
@@ -112,10 +118,12 @@ const aassignmentTableData = assignmentDetails.map((item, idx) => {
 });
 
 const FacultyAssignments = () => {
-  const options = ["1st yr", "2nd yr", "3rd yr", "4th yr"];
-  const [branch, setBranch] = useState("");
-  const [year, setYear] = useState("");
-  const [semester, setSemester] = useState("");
+  const courseOptions = [
+    "1st yr - 2nd sem - Mathematics ",
+    "2nd yr - 4nd sem - COA ",
+    "1st yr - 2nd sem - Nathematics ",
+  ];
+
   const [course, setCourse] = useState("");
   const [date, setDate] = useState("");
 
@@ -124,32 +132,11 @@ const FacultyAssignments = () => {
       {/* dropdown */}
       <div className="flex gap-5">
         <Dropdown
-          options={options}
-          onChange={(e) => setBranch(e.value)}
-          value={branch}
-          placeholder="Select Branch"
-          className="w-48 rounded "
-        />
-        <Dropdown
-          options={options}
-          onChange={(e) => setYear(e.value)}
-          value={year}
-          placeholder="Select Year"
-          className="w-48 rounded "
-        />
-        <Dropdown
-          options={options}
-          onChange={(e) => setSemester(e.value)}
-          value={semester}
-          placeholder="Select Semester"
-          className="w-48 rounded "
-        />
-        <Dropdown
-          options={options}
+          options={courseOptions}
           onChange={(e) => setCourse(e.value)}
           value={course}
           placeholder="Select Course"
-          className="w-48 rounded "
+          className="w-[400px] rounded "
         />
       </div>
 
