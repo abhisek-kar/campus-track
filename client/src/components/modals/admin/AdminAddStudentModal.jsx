@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { Toaster } from "react-hot-toast";
 import { useAdmin } from "../../../context/adminContext";
 import { useSelector } from "react-redux";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const yearOptions = ["1st", "2nd", "3rd", "4th"];
 const semesterOptions = {
@@ -19,6 +20,8 @@ const semesterOptions = {
 const AdminAddStudentModal = ({ onClose, edit }) => {
   const { currentStudent, setCurrentStudent } = useAdmin();
   const [showSpin, setShowSpin] = useState(false);
+  const [showPassword, setShowPassword]=useState(false)
+
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     email: Yup.string()
@@ -26,8 +29,8 @@ const AdminAddStudentModal = ({ onClose, edit }) => {
       .required("Email is required"),
     password: !edit
       ? Yup.string()
-          .min(6, "Password must be at least 6 characters")
-          .required("Password is required")
+        .min(6, "Password must be at least 6 characters")
+        .required("Password is required")
       : Yup.string(),
     year: Yup.string().required("Year is required"),
     semester: Yup.string().required("Semester is required"),
@@ -183,19 +186,35 @@ const AdminAddStudentModal = ({ onClose, edit }) => {
                   Password
                 </label>
                 <div>
-                  <input
-                    type="password"
+                 <div className="relative">
+                 <input
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     className="border-[3px] border-themeBlue mt-1 p-2 rounded-md w-96 tracking-wide poppins-medium text-gray-600 focus:outline-none "
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.password}
                   />
+                  {showPassword ? (
+                      <AiFillEye
+                        className="absolute top-4 right-2 w-5 h-5 cursor-pointer"
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    ) : (
+                      <AiFillEyeInvisible
+                        className= "absolute top-4 right-2 w-5 h-5 cursor-pointer"
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    )}
+                 </div>
                   {formik.touched.password && formik.errors.password && (
                     <div className="absolute mb-1 text-red-500 poppins-medium text-sm">
                       {formik.errors.password}
                     </div>
                   )}
+                  
+                    
+                  
                 </div>
               </div>
 

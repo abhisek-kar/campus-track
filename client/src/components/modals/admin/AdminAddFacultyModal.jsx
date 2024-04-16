@@ -9,11 +9,14 @@ import { useSelector } from "react-redux";
 import { Toaster } from "react-hot-toast";
 import toast from "react-hot-toast";
 import { Spinner } from "../../Loader";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
 const AdminAddFacultyModal = ({ onClose, edit }) => {
   const { currentFaculty } = useSelector((state) => state?.admin);
   const { department } = useSelector((state) => state.auth.user);
   const [showSpin, setShowSpin] = useState(false);
+  const[showPassword,setShowPassword]=useState(false);
+
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
@@ -146,15 +149,26 @@ const AdminAddFacultyModal = ({ onClose, edit }) => {
                 <label className="poppins-medium text-lg  tracking-wide">
                   Password
                 </label>
-                <div>
+                <div className ='relative' >
                   <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     name="password"
                     className="border-[3px] border-themeBlue mt-1 p-2 rounded-md w-96 tracking-wide poppins-medium text-gray-600 focus:outline-none "
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.password}
                   />
+                  {showPassword ? (
+                      <AiFillEye
+                        className="absolute top-4 right-2 w-5 h-5 cursor-pointer"
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    ) : (
+                      <AiFillEyeInvisible
+                        className= "absolute top-4 right-2 w-5 h-5 cursor-pointer"
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    )}
                   {formik.touched.password && formik.errors.password && (
                     <div className="absolute mb-1 text-red-500 poppins-medium text-sm">
                       {formik.errors.password}
