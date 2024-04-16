@@ -20,7 +20,7 @@ const semesterOptions = {
 const AdminAddStudentModal = ({ onClose, edit }) => {
   const { currentStudent, setCurrentStudent } = useAdmin();
   const [showSpin, setShowSpin] = useState(false);
-  const [showPassword, setShowPassword]=useState(true)
+  const [showPassword, setShowPassword]=useState(false)
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
