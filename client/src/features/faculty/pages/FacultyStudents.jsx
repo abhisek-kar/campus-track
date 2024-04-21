@@ -3,184 +3,74 @@ import FacultyDashBoard from "../../../components/dashboard/FacultyDashBoard";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import Table from "../../../components/Table";
+import toast from "react-hot-toast";
+import API from "../../../services/API";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "../../../components/Loader";
 
 const FacultyStudents = () => {
-  const options = ["1st yr", "2nd yr", "3rd yr", "4th yr"];
-  const [branch, setBranch] = useState("");
-  const [year, setYear] = useState("");
-  const [semester, setSemester] = useState("");
-  const [date, setDate] = useState("");
-  //
-  const attendanceDetails = [
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-    {
-      regdNo: "2001104065",
-      name: "Abhisek Kar",
-    },
-  ];
+  const [selectedCourse, setSelectedCourse] = useState({
+    courseId: "",
+    departmentId: "",
+    semester: "",
+  });
+  const { allCoursesAssigned } = useSelector((state) => state?.faculty);
+  const [takingAttendanceFor, setTakingAttendanceFor] = useState("");
+  const [viewTable, setViewTable] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [attendanceDetails, setAttendanceDetails] = useState([]);
+  const dispatch = useDispatch();
+  const handleCourseChange = (e) => {
+    setViewTable(false);
+    const { value } = e.target;
+    const selectedOption = allCoursesAssigned
+      ?.slice(1)
+      ?.find((course) => course.course._id === value);
+    setSelectedCourse({
+      courseId: selectedOption.course._id,
+      departmentId: selectedOption.department._id,
+      semester: selectedOption.semester,
+    });
+    setTakingAttendanceFor(
+      selectedOption
+        ? `${selectedOption.department.name} -- ${selectedOption.semester} sem -- ${selectedOption.course.name}`
+        : ""
+    );
+  };
+  const handleGetDetails = async () => {
+    if (
+      !selectedCourse.courseId ||
+      !selectedCourse.departmentId ||
+      !selectedCourse.semester
+    ) {
+      return toast.error("please select any of assigned courses");
+    }
+    setLoading(true);
+
+    console.log(selectedCourse);
+    try {
+      const { data } = await API.post(
+        "student//get-students-stats-by-course",
+        selectedCourse
+      );
+      console.log(data);
+      setAttendanceDetails(data?.students);
+      toast.success(data?.message);
+      // console.log(data);
+      setViewTable(true);
+      setSelectedCourse({
+        courseId: "",
+        departmentId: "",
+        semester: "",
+      });
+    } catch (error) {
+      console.log(error);
+      setViewTable(false);
+      toast.error(error?.response?.data?.message || error?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   const attendanceTableHeadData = [
     {
       accessorKey: "serial",
@@ -199,67 +89,122 @@ const FacultyStudents = () => {
     },
     {
       accessorKey: "totalPresent",
-      header: "Total Present",
-      size: 150,
+      header: "Present",
+      size: 50,
     },
     {
       accessorKey: "totalAbsent",
-      header: "Total Absent",
-      size: 150,
+      header: "Absent",
+      size: 50,
+    },
+    {
+      accessorKey: "totalSick",
+      header: "Sick",
+      size: 50,
+    },
+    {
+      accessorKey: "total",
+      header: "Total",
+      size: 50,
     },
   ];
 
-  const attendanceTableData = attendanceDetails.map((item, idx) => {
+  const attendanceTableData = attendanceDetails?.map((item, idx) => {
     return {
       serial: idx + 1,
       regdNo: item?.regdNo,
       name: item?.name,
-      totalPresent: item?.totalPresent,
-      totalAbsent: item?.totalAbsent,
+      totalPresent: (
+        <button
+          disabled
+          className="poppins-medium bg-green-600 text-white w-10 px-2  py-1 rounded"
+        >
+          {item?.totalPresent}
+        </button>
+      ),
+      totalAbsent: (
+        <button
+          disabled
+          className="poppins-medium bg-red-600 text-white px-2 w-10  py-1 rounded"
+        >
+          {item?.totalAbsent}
+        </button>
+      ),
+      totalSick: (
+        <button
+          disabled
+          className="poppins-medium bg-yellow-600 text-white w-10 px-2  py-1 rounded"
+        >
+          {item?.totalSick}
+        </button>
+      ),
+      total: (
+        <button
+          disabled
+          className="poppins-medium bg-blue-600 text-white w-10 px-2  py-1 rounded"
+        >
+          {item?.totalAttendances}
+        </button>
+      ),
     };
   });
 
   return (
     <FacultyDashBoard>
-      <div className="poppins-medium text-gray-800 text-xl">Student List</div>
-      <div className="poppins-regular text-gray-600 text-sm">
-        20 students found
-      </div>
+      {loading && <Loader />}
       {/* dropdown */}
-      {/* <div className="flex gap-5">
-        <Dropdown
-          options={options}
-          onChange={(e) => setBranch(e.value)}
-          value={branch}
-          placeholder="Select Branch"
-          className="w-48 rounded "
-        />
-        <Dropdown
-          options={options}
-          onChange={(e) => setYear(e.value)}
-          value={year}
-          placeholder="Select Year"
-          className="w-48 rounded "
-        />
-        <Dropdown
-          options={options}
-          onChange={(e) => setSemester(e.value)}
-          value={semester}
-          placeholder="Select Semester"
-          className="w-48 rounded "
-        />
+      <div className="flex items-center justify-between mt-5 mb-10">
+        <select
+          value={selectedCourse.courseId}
+          onChange={handleCourseChange}
+          className="p-2 poppins-bold-italic border-2 outline-none border-none  rounded"
+        >
+          <option value="" className="poppins-medium">
+            Select a course
+          </option>
+          {allCoursesAssigned?.slice(1)?.map((course) => {
+            return (
+              <option
+                key={course._id}
+                value={course.course._id}
+                className="poppins-medium"
+              >
+                {course.department.name} {"--->"} {course.semester}{" "}
+                {" sem --->"} {course.course.name}
+              </option>
+            );
+          })}
+        </select>
 
-        <button className="ml-auto px-2 py-1 poppins-medium text-white bg-themeBlue rounded hover:opacity-90">
-          Get Students
+        <button
+          onClick={handleGetDetails}
+          className="ml-auto scale-110 px-2 py-1 poppins-medium text-white bg-themeBlue rounded hover:opacity-90"
+        >
+          Get Student Attendances
         </button>
-      </div> */}
-      {/* attendance section */}
-      <div className="mt-5">
-        <Table
-          tableData={attendanceTableData}
-          tableHeadData={attendanceTableHeadData}
-        />
       </div>
+
+      {viewTable && (
+        <>
+          {/* attendance section */}
+
+          <div className="mt-10 relative ">
+            <div className=" mb-5  ">
+              <div className=" poppins-bold  mb-1  text-gray-700">
+                {takingAttendanceFor}
+              </div>
+              <div className=" poppins-medium    text-gray-500">
+                {attendanceDetails?.length} student{"(s)"} available
+              </div>
+            </div>
+
+            <Table
+              tableData={attendanceTableData}
+              tableHeadData={attendanceTableHeadData}
+            />
+          </div>
+        </>
+      )}
     </FacultyDashBoard>
   );
 };

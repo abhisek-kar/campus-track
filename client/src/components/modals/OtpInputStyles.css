@@ -1,0 +1,23 @@
+/* OtpInputStyles.css */
+.otp-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style individual input elements */
+.otp-input {
+  width: 40px; /* Adjust width as needed */
+  height: 40px; /* Adjust height as needed */
+  margin: 0 5px; /* Adjust spacing between inputs */
+  font-size: 18px; /* Adjust font size as needed */
+  text-align: center; /* Center text within input */
+  border: 1px solid #ccc; /* Add border for visual separation */
+  border-radius: 5px; /* Add rounded corners */
+}
+
+/* Style separator */
+.otp-container span {
+  margin: 0 5px; /* Adjust spacing between separators and inputs */
+  font-size: 18px; /* Adjust font size as needed */
+}

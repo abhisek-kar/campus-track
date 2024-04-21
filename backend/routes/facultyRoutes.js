@@ -6,6 +6,11 @@ const {
   createFacultyController,
   deleteFacultyController,
   updateFacultyController,
+  addCourseToFaculty,
+  getCoursesOfFaculty,
+  getCoursesByDepartment,
+  getAllCourseDetails,
+  revokeCourseFromFaculty,
 } = require("../controllers/facultyController");
 
 const router = express.Router();
@@ -15,14 +20,26 @@ const router = express.Router();
 // get all faculty
 router.get("/", getAllFacultyController);
 
-// get  faculty details by student id
-router.get("/:id", isAuthenticated, isAdmin, getFacultyByIdController);
+// get  faculty details by  id
+router.get("/:id", getFacultyByIdController);
 
 // add faculty
-router.post("/", isAuthenticated, isAdmin, createFacultyController);
+router.post("/", createFacultyController);
+
+// add course to faculty
+router.patch("/add-course", addCourseToFaculty);
+
+// get all courses of faculties
+router.get("/courses/:facultyId", getAllCourseDetails);
+
+// get all courses of specific department
+router.post("/dept-courses", getCoursesByDepartment);
+
+// remove course from faculty
+router.patch("/delete-course", revokeCourseFromFaculty);
 
 // delete faculty
-router.delete("/:id", isAuthenticated, isAdmin, deleteFacultyController);
+router.delete("/:id", deleteFacultyController);
 
 // update faculty
 router.patch("/:id", updateFacultyController);

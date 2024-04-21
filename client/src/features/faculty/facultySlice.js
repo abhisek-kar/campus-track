@@ -4,11 +4,11 @@ import API from "../../services/API";
 import toast from "react-hot-toast";
 
 // Async thunk for logging in
-export const getAllStudentsAsync = createAsyncThunk(
-  "admin/students",
-  async (_, { rejectWithValue }) => {
+export const getAllCourseOfFacultyAsync = createAsyncThunk(
+  "faculty/courses",
+  async (facultyId, { rejectWithValue }) => {
     try {
-      const { data } = await API.get("/student");
+      const { data } = await API.get("/faculty/courses/" + facultyId);
       console.log(data);
       if (data?.success) {
         return data;
@@ -41,43 +41,58 @@ export const getAllFacultiesAsync = createAsyncThunk(
 const initialState = {
   loading: false,
   error: null,
-  currentStudent: null,
-  currentFaculty: null,
-  totalStudents: 0,
+  allCoursesAssigned: [],
+  studentCount: [],
   allStudents: [],
-  allFacutlies: [],
+  storeAttendanceDetails: [],
 };
 
 // Auth slice with reducers and actions
-const adminSlice = createSlice({
-  name: "admin",
+const facultySlice = createSlice({
+  name: "faculty",
   initialState,
   reducers: {
-    clearAdmin: (state) => {
+    clearFaculty: (state) => {
       state.error = null;
       state.loading = false;
-      state.allFacutlies = [];
+      state.allCoursesAssigned = [];
       state.allStudents = [];
-      state.currentFaculty = null;
-      state.currentStudent = null;
-      state.totalStudents = 0;
+      state.studentCount = [];
+      state.storeAttendanceDetails = [{}];
     },
-    setCurrentStudent: (state, action) => {
-      state.currentStudent = action.payload;
+    setAllCoursesAssigned: (state, action) => {
+      state.allCoursesAssigned = action.payload;
     },
-    setCurrentFaculty: (state, action) => {
-      state.currentFaculty = action.payload;
+    setStudentCount: (state, action) => {
+      state.studentCount = action.payload;
+    },
+    setAllStudents: (state, action) => {
+      state.allStudents = action.payload;
+    },
+    setStoreAttendanceDetails: (state, action) => {
+      const payload = action.payload;
+      const idx = state.storeAttendanceDetails.findIndex(
+        (item) => item?.student === payload?.student
+      );
+      if (idx === -1) {
+        state.storeAttendanceDetails.push(payload);
+      } else {
+        state.storeAttendanceDetails[idx] = payload;
+      }
+    },
+    clearStoreAttendanceDetails: (state) => {
+      state.storeAttendanceDetails = [];
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getAllStudentsAsync.pending, (state) => {
+    builder.addCase(getAllCourseOfFacultyAsync.pending, (state) => {
       state.loading = true;
     });
-    builder.addCase(getAllStudentsAsync.fulfilled, (state, action) => {
+    builder.addCase(getAllCourseOfFacultyAsync.fulfilled, (state, action) => {
       state.loading = false;
-      state.allStudents = action?.payload?.students;
+      state.allCoursesAssigned = action?.payload?.faculty?.courses;
     });
-    builder.addCase(getAllStudentsAsync.rejected, (state) => {
+    builder.addCase(getAllCourseOfFacultyAsync.rejected, (state) => {
       state.loading = false;
     });
     builder.addCase(getAllFacultiesAsync.pending, (state) => {
@@ -94,6 +109,12 @@ const adminSlice = createSlice({
 });
 
 // Export actions, reducer, and selector
-export const { setCurrentFaculty, setCurrentStudent, clearAdmin } =
-  adminSlice.actions;
-export default adminSlice.reducer;
+export const {
+  clearFaculty,
+  setAllCoursesAssigned,
+  setAllStudents,
+  setStudentCount,
+  setStoreAttendanceDetails,
+  clearStoreAttendanceDetails,
+} = facultySlice.actions;
+export default facultySlice.reducer;

@@ -5,6 +5,7 @@ const {
   addCourseController,
   deleteCourseController,
   updateCourseController,
+  getAssignedCourseByIdController,
 } = require("../controllers/courseController");
 const { isAuthenticated } = require("../middlewares/middleware");
 
@@ -13,10 +14,13 @@ const router = express.Router();
 //routes
 
 // get all courses
-router.get("/", isAuthenticated, getAllCoursesController);
+router.get("/", getAllCoursesController);
 
 // get  course  by course id
-router.get("/:id", isAuthenticated, getCourseByIdController);
+router.get("/:id", getCourseByIdController);
+
+// get all courses  by student id
+router.get("/assigned-courses/:studentId", getAssignedCourseByIdController);
 
 // add course
 router.post("/", addCourseController);

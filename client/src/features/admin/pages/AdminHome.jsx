@@ -1,16 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AdminDashBoard from "../../../components/dashboard/AdminDashBoard";
 import Chart from "./../../../components/Chart";
+import API from "../../../services/API";
 
 const AdminHome = () => {
+  const [totalStudents, setTotalStudents] = useState(0);
+  const [totalFaculties, setTotalFaculties] = useState(0);
+  const [totalCourses, setTotalCourses] = useState(0);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await API.get("/faculty");
+        setTotalFaculties(data?.faculty?.length);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+
+    return () => {};
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await API.get("/student");
+        setTotalStudents(data?.students?.length);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+
+    return () => {};
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await API.get("/course");
+        setTotalCourses(data?.courses?.length);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+
+    return () => {};
+  }, []);
   return (
     <AdminDashBoard>
       {/* boxes */}
 
       <div className="flex gap-2 w-full mt-20 justify-evenly">
-        <Box boxName={"Total Students"} boxCount={230} />
-        <Box boxName={"Total Faculties"} boxCount={18} />
-        <Box boxName={"Total Courses"} boxCount={55} />
+        <Box boxName={"Total Students"} boxCount={totalStudents} />
+        <Box boxName={"Total Faculties"} boxCount={totalFaculties} />
+        <Box boxName={"Total Courses"} boxCount={totalCourses} />
       </div>
       {/* <div className="mt-5 w-full ml-auto">
         <Chart
@@ -47,7 +96,7 @@ export default AdminHome;
 
 function Box({ boxName, boxCount }) {
   return (
-    <div className="bg-themeBlue flex flex-col items-center justify-center w-[25%] h-36 rounded  text-white cursor-pointer hover:scale-105 transition-all ">
+    <div className="bg-themeBlue flex flex-col items-center justify-center w-[25%] h-36 rounded  text-white  hover:scale-105 transition-all ">
       <span className="font-mono tracking-wide font-semibold text-xl">
         {boxName}
       </span>

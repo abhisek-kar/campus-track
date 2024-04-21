@@ -122,9 +122,7 @@ exports.getDepartmentByIdController = async (req, res) => {
 // get all department
 exports.getAllDepartmentsController = async (req, res) => {
   try {
-    const allDepartments = await DepartmentModel.find()
-      .populate("admin")
-      .populate("faculties");
+    const allDepartments = await DepartmentModel.find();
 
     if (!allDepartments || allDepartments.length === 0) {
       return res.status(404).json({

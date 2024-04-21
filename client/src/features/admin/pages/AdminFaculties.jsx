@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { IoMdAdd } from "react-icons/io";
 import AdminAddFacultyModal from "../../../components/modals/admin/AdminAddFacultyModal";
 import { FaBookReader } from "react-icons/fa";
-import AdminCourseDetails from "../../../components/modals/admin/AdminCourseDetailsModal";
+import AdminCourseDetails from "../../../components/modals/admin/AdminFacultyCourseDetailsModal";
 import { useAdmin } from "../../../context/adminContext";
 import { useEffect } from "react";
 import API from "../../../services/API";
@@ -75,14 +75,19 @@ const AdminFaculties = () => {
       email: item?.email,
       mobile: item?.mobile,
       action: (
-        <div className="flex gap-8">
+        <div className="flex gap-5">
           <Edit
             onClick={() => {
               setShowEditFacultyModal(true);
               dispatch(setCurrentFaculty(item));
             }}
           />
-          <CourseDetails onClick={() => setShowCourseDetailsModal(true)} />
+          <CourseDetails
+            onClick={() => {
+              setShowCourseDetailsModal(true);
+              dispatch(setCurrentFaculty(item));
+            }}
+          />
         </div>
       ),
     };
@@ -130,9 +135,9 @@ function Edit({ onClick }) {
   return (
     <div
       onClick={onClick}
-      className="flex  items-center gap-1 text-themeBlue poppins-bold underline cursor-pointer font-semibold"
+      className=" text-themeBlue poppins-semibold text-xs underline cursor-pointer"
     >
-      <RiEdit2Line /> Edit
+      Edit
     </div>
   );
 }
@@ -140,9 +145,9 @@ function CourseDetails({ onClick }) {
   return (
     <div
       onClick={onClick}
-      className="flex  items-center gap-1 text-themeBlue poppins-bold underline cursor-pointer font-semibold"
+      className=" text-themeBlue poppins-semibold text-xs underline cursor-pointer"
     >
-      <FaBookReader /> Course Details
+      Course Details
     </div>
   );
 }

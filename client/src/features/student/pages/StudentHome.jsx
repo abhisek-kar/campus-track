@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Circle } from "rc-progress";
 import StudentDashBoard from "../../../components/dashboard/StudentDashBoard";
+import API from "../../../services/API";
+import { useSelector } from "react-redux";
 
 const StudentHome = () => {
+  const { user } = useSelector((state) => state?.auth);
+  const [attendanceData, setAttendanceData] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await API.get(`/attendance/stats/${user?._id}`);
+        setAttendanceData(data?.data);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+
+    return () => {};
+  }, []);
   return (
     <StudentDashBoard>
       {" "}
@@ -10,7 +29,13 @@ const StudentHome = () => {
         {/* total present */}
         <div className="relative w-48 h-48 ">
           <Circle
-            percent={75}
+            percent={
+              Math.round(
+                (attendanceData?.totalPresent /
+                  attendanceData?.totalAttendances) *
+                  100
+              ) || 0
+            }
             strokeWidth={6}
             strokeColor="#0f7491"
             trailWidth={6}
@@ -23,14 +48,21 @@ const StudentHome = () => {
             </span>
             <span className="poppins-medium text-lg  text-gray-600">
               {/* data from database */}
-              56/70
+              {attendanceData?.totalPresent || 0}/
+              {attendanceData?.totalAttendances || 0}
             </span>
           </div>
         </div>
         {/* total absent */}
         <div className="relative w-48 h-48 ">
           <Circle
-            percent={25}
+            percent={
+              Math.round(
+                (attendanceData?.totalAbsent /
+                  attendanceData?.totalAttendances) *
+                  100
+              ) || 0
+            }
             strokeWidth={6}
             strokeColor="#0f7491"
             trailWidth={6}
@@ -42,14 +74,21 @@ const StudentHome = () => {
             </span>
             <span className="poppins-medium text-lg  text-gray-600">
               {/* data from database */}
-              14/70
+              {attendanceData?.totalAbsent || 0}/
+              {attendanceData?.totalAttendances || 0}
             </span>
           </div>
         </div>
         {/* total attendance percentage */}
         <div className="relative w-48 h-48 ">
           <Circle
-            percent={75}
+            percent={
+              Math.round(
+                ((attendanceData?.totalPresent + attendanceData?.totalSick) /
+                  attendanceData?.totalAttendances) *
+                  100
+              ) || 0
+            }
             strokeWidth={6}
             strokeColor="#0f7491"
             trailWidth={6}
@@ -61,14 +100,24 @@ const StudentHome = () => {
             </span>
             <span className="poppins-medium text-lg   text-gray-600">
               {/* data from database */}
-              75%
+              {Math.round(
+                ((attendanceData?.totalPresent + attendanceData?.totalSick) /
+                  attendanceData?.totalAttendances) *
+                  100
+              ) || 0}
+              %
             </span>
           </div>
         </div>
         {/* seek leaves */}
         <div className="relative w-48 h-48 ">
           <Circle
-            percent={10}
+            percent={
+              Math.round(
+                (attendanceData?.totalSick / attendanceData?.totalAttendances) *
+                  500
+              ) || 0
+            }
             strokeWidth={6}
             strokeColor="#0f7491"
             trailWidth={6}
@@ -79,7 +128,7 @@ const StudentHome = () => {
               Sick Leaves
             </span>
             <span className="poppins-medium text-lg  text-gray-600">
-              {/* data from database */}5
+              {attendanceData?.totalSick || 0}
             </span>
           </div>
         </div>

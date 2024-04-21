@@ -30,7 +30,7 @@ const OtpBox = () => {
   };
 
   return (
-    <div className="flex justify-center items-center mt-5">
+    <div className="flex justify-center items-center mt-8">
       {otp.map((digit, index) => (
         <input
           key={index}

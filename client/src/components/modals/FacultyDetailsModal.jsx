@@ -10,7 +10,7 @@ const FacultyDetailsModal = ({ onClose, handleSubmit }) => {
         onClick={onClose}
       >
         <div
-          className="relative p-6 bg-white rounded shadow-md max-w-[90%] max-h-[90%] overflow-auto"
+          className="relative p-6 bg-white rounded shadow-md w-1/3  max-w-[90%] max-h-[90%] overflow-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {/* heading */}
@@ -21,12 +21,12 @@ const FacultyDetailsModal = ({ onClose, handleSubmit }) => {
 
           {/* body */}
           <div className="mb-4 ">
-            <div className="mb-1">
+            {/* <div className="mb-1">
               <span className="poppins-bold">Department : </span>
               <span className="poppins-medium-italic">
                 {user?.department?.name}
               </span>
-            </div>
+            </div> */}
             <div className="mb-1">
               <span className="poppins-bold">Email : </span>
               <span className="poppins-medium-italic">{user?.email}</span>

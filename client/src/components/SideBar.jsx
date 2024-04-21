@@ -4,6 +4,8 @@ import UserModal from "./modals/LogoutModal";
 import LogOutModal from "./modals/LogoutModal";
 import { useDispatch, useSelector } from "react-redux";
 import { clear } from "../features/auth/authSlice";
+import { clearFaculty } from "../features/faculty/facultySlice";
+import { clearAdmin } from "../features/admin/adminSlice";
 
 const SideBar = ({ data, role }) => {
   let location = useLocation();
@@ -67,6 +69,8 @@ const SideBar = ({ data, role }) => {
         <LogOutModal
           handleSubmit={(e) => {
             dispatch(clear());
+            dispatch(clearAdmin());
+            dispatch(clearFaculty());
             navigate("/");
           }}
           onClose={() => setShowUserModal(false)}

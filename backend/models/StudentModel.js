@@ -38,7 +38,16 @@ const studentSchema = new mongoose.Schema({
     ref: "Department",
     required: true,
   },
-
+  resetPasswordOtp: {
+    otp: {
+      type: String,
+      default: null,
+    },
+    expiry: {
+      type: Date,
+      default: null,
+    },
+  },
   // courses: [
   //   {
   //     type: mongoose.Schema.ObjectId,

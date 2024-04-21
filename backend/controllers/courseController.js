@@ -1,4 +1,6 @@
+const AttendanceModel = require("../models/AttendanceModel");
 const CourseModel = require("../models/CourseModel");
+const StudentModel = require("../models/StudentModel");
 
 exports.addCourseController = async (req, res) => {
   try {
@@ -88,7 +90,7 @@ exports.updateCourseController = async (req, res) => {
 // get all courses
 exports.getAllCoursesController = async (req, res) => {
   try {
-    const allCourses = await CourseModel.find().populate("courseFaculty");
+    const allCourses = await CourseModel.find();
 
     if (!allCourses || allCourses.length === 0) {
       return res.status(404).json({
@@ -130,6 +132,42 @@ exports.getCourseByIdController = async (req, res) => {
       success: true,
       message: `Course retrieved successfully`,
       course: course,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in course api",
+    });
+  }
+};
+
+// get all assigned courses by student id
+exports.getAssignedCourseByIdController = async (req, res) => {
+  try {
+    const { studentId } = req.params;
+
+    let user = await StudentModel.findOne({ _id: studentId });
+    if (!user) {
+      return res.status(404).json({
+        success: true,
+        message: ` student not found`,
+        course: course,
+      });
+    }
+    let attendance = await AttendanceModel.findOne({
+      student: studentId,
+    }).populate({
+      path: "attendance.course",
+      select: "_id name code", // Include only the necessary fields
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: `Courses retrieved successfully`,
+      courses: attendance
+        ? attendance.attendance.map((item) => item.course)
+        : [],
     });
   } catch (error) {
     console.error(error);

@@ -5,19 +5,21 @@ const attendanceSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Student",
     required: true,
+    unique: true,
   },
   attendance: [
     {
       course: {
         type: mongoose.Schema.ObjectId,
         ref: "Course",
-        required: true,
+        unique: true,
       },
       records: [
         {
           date: {
             type: Date,
             default: Date.now,
+            unique: true,
           },
 
           status: {

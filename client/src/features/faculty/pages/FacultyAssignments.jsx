@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import FacultyDashBoard from "../../../components/dashboard/FacultyDashBoard";
 import Dropdown from "react-dropdown";
 import Table, { Badge, Edit } from "../../../components/Table";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "../../../components/Loader";
 
 const assignmentDetails = [
   {
@@ -118,47 +120,131 @@ const aassignmentTableData = assignmentDetails.map((item, idx) => {
 });
 
 const FacultyAssignments = () => {
-  const courseOptions = [
-    "1st yr - 2nd sem - Mathematics ",
-    "2nd yr - 4nd sem - COA ",
-    "1st yr - 2nd sem - Nathematics ",
-  ];
-
-  const [course, setCourse] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState({
+    courseId: "",
+    departmentId: "",
+    semester: "",
+  });
+  const { allCoursesAssigned } = useSelector((state) => state?.faculty);
+  const [viewTable, setViewTable] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [date, setDate] = useState("");
+  const [task, setTask] = useState("");
+  const [doc, setDoc] = useState("");
+  const dispatch = useDispatch();
+  const handleCourseChange = (e) => {
+    setViewTable(false);
+    const { value } = e.target;
+    const selectedOption = allCoursesAssigned
+      ?.slice(1)
+      ?.find((course) => course.course._id === value);
+    setSelectedCourse({
+      courseId: selectedOption.course._id,
+      departmentId: selectedOption.department._id,
+      semester: selectedOption.semester,
+    });
+  };
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      // Prepare the data to send to the API
+      const formData = new FormData();
+      formData.append("courseId", selectedCourse.courseId);
+      formData.append("departmentId", selectedCourse.departmentId);
+      formData.append("semester", selectedCourse.semester);
+      formData.append("task", task);
+      formData.append("doc", doc); // Assuming doc is a file object
+      formData.append("dueDate", date);
+      console.log(formData);
+      // Make an API call to submit the assignment
+      // const response = await API.post("/assignments/create", formData);
+
+      // Handle the response as needed
+      // console.log(response.data); // Log the response or update state, etc.
+
+      // Clear the form fields after successful submission
+      setSelectedCourse({ courseId: "", departmentId: "", semester: "" });
+      setTask("");
+      setDoc(null);
+      setDate("");
+    } catch (error) {
+      console.error("Error submitting assignment:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <FacultyDashBoard>
+      {loading && <Loader />}
+      <p className="poppins-medium text-gray-800 text-2xl ">
+        Create Assignment
+      </p>
+
       {/* dropdown */}
-      <div className="flex gap-5">
-        <Dropdown
-          options={courseOptions}
-          onChange={(e) => setCourse(e.value)}
-          value={course}
-          placeholder="Select Course"
-          className="w-[400px] rounded "
-        />
+      <div className=" mt-5 mb-10">
+        <select
+          value={selectedCourse.courseId}
+          onChange={handleCourseChange}
+          className="p-2 poppins-bold-italic border-2 outline-none border-none border-gray-600  rounded"
+        >
+          <option value="" className="poppins-medium">
+            Select a course
+          </option>
+          {allCoursesAssigned?.slice(1)?.map((course) => {
+            return (
+              <option
+                key={course._id}
+                value={course.course._id}
+                className="poppins-medium"
+              >
+                {course.department.name} {"--->"} {course.semester}{" "}
+                {" sem --->"} {course.course.name}
+              </option>
+            );
+          })}
+        </select>
       </div>
 
       {/* assignment */}
       <div className="mt-10">
-        <p className="poppins-medium text-gray-800 text-xl">
-          Create Assignment
-        </p>
         <div className="">
+          <p className="poppins-medium text-gray-700">write task here ....</p>
           {/* textarea */}
-          <textarea className="w-full h-48 mt-5" />
+          <textarea
+            placeholder="Enter your task here..."
+            className="w-full h-48 mt-1 border-none outline-none p-2 poppins-medium border-none outline-none"
+            value={task}
+            onChange={(e) => setTask(e.target.value)}
+          />
           {/* attach file */}
-          <div>
-            <label className="poppins-medium block my-2">Attach document</label>
+          <div className="flex gap-3 items-center mt-3">
+            <label className="poppins-medium block my-2 text-gray-700">
+              Attach document
+            </label>
             <input
+              onChange={(e) => setDoc(e.target.files[0])}
               type="file"
-              className="poppins-regular-italic text-sm text-themeBlue"
+              className="poppins-regular-italic p-2 text-sm text-themeBlue border-none outline-none"
+            />
+          </div>
+          <div className="flex gap-3 items-center mt-3">
+            <label className="poppins-medium block my-2 text-gray-700">
+              Submit By
+            </label>
+            <input
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              type="date"
+              className="poppins-regular-italic text-sm text-themeBlue p-1 border-none outline-none"
             />
           </div>
           {/* submit */}
           <div className="w-full flex justify-end ">
-            <button className=" px-2 py-1 bg-themeBlue rounded hover:opacity-90 poppins-medium text-white my-5 ">
+            <button
+              onClick={handleSubmit}
+              className=" px-2 py-1 bg-themeBlue rounded hover:opacity-90 poppins-medium text-white my-5 "
+            >
               Submit
             </button>
           </div>

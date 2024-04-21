@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SideBar from "../SideBar";
 import { facultySidebarData } from "../../services/sidebarData/facultySidebarData";
 import StudentNotificationModal from "../modals/StudentNotificationModal";
 import DashboardHeader from "./DashboardHeader";
 import { useModal } from "../../context/modalContext";
 import FacultyDetailsModal from "../modals/FacultyDetailsModal";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCourseOfFacultyAsync } from "../../features/faculty/facultySlice";
 
 const FacultyDashBoard = ({ children }) => {
   const [showNotificationModal, setShowNotificationModal] = useState(false);
   const { showFacultyDeatilsModal, closeFacultyDeatilsModal } = useModal();
-
+  const { user } = useSelector((state) => state?.auth);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getAllCourseOfFacultyAsync(user?._id));
+  }, []);
   return (
     <div className="grid grid-cols-[260px,1fr]">
       {/* sidebar */}

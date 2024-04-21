@@ -27,6 +27,16 @@ const adminSchema = new mongoose.Schema({
     required: true,
     ref: "Department",
   },
+  resetPasswordOtp: {
+    otp: {
+      type: String,
+      default: null,
+    },
+    expiry: {
+      type: Date,
+      default: null,
+    },
+  },
 });
 
 module.exports = mongoose.model("Admin", adminSchema);

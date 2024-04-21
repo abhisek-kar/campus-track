@@ -8,16 +8,22 @@ import AdminAddStudentModal from "../../../components/modals/admin/AdminAddStude
 import toast from "react-hot-toast";
 import { useEffect } from "react";
 import API from "../../../services/API";
-import { Spinner } from "../../../components/Loader";
+import Loader, { Spinner } from "../../../components/Loader";
 import { useAdmin } from "../../../context/adminContext";
+import { FaBookReader } from "react-icons/fa";
+import AdminStudentCourseDetails from "../../../components/modals/admin/AdminStudentCourseDetails";
 
 const AdminStudents = () => {
   const navigate = useNavigate();
   const { currentStudent, setCurrentStudent } = useAdmin();
+  const { mailLoader, setMailLoader } = useAdmin();
+
   const [showAddStudentsModal, setShowAddStudentsModal] = useState(false);
   const [showEditStudentsModal, setShowEditStudentsModal] = useState(false);
   const [studentDetails, setStudentDetails] = useState([]);
   const [showSpinner, setShowSpinner] = useState(false);
+  const [showCourseDetailsModal, setShowCourseDetailsModal] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       setShowSpinner(true);
@@ -46,17 +52,17 @@ const AdminStudents = () => {
     {
       accessorKey: "name",
       header: "Name",
-      size: 100,
+      size: 150,
     },
     {
       accessorKey: "year",
       header: "Year",
-      size: 50,
+      size: 30,
     },
     {
-      accessorKey: "semester",
-      header: "Semester",
-      size: 50,
+      accessorKey: "sem",
+      header: "Sem",
+      size: 30,
     },
     {
       accessorKey: "email",
@@ -71,7 +77,7 @@ const AdminStudents = () => {
     {
       accessorKey: "action",
       header: "Action",
-      size: 150,
+      size: 350,
     },
   ];
 
@@ -80,18 +86,24 @@ const AdminStudents = () => {
       regno: 2001104065,
       name: item?.name,
       year: item?.year,
-      semester: item?.semester,
+      sem: item?.semester,
       email: item?.email,
-      attendance: (
-        <Badge flag={(item?.attendance / item?.totalAttendance) * 100 >= 75} />
-      ),
+      attendance: <Badge currentStudent={item} />,
       action: (
-        <Edit
-          onClick={() => {
-            setShowEditStudentsModal(true);
-            setCurrentStudent(item);
-          }}
-        />
+        <div className="flex gap-5">
+          <Edit
+            onClick={() => {
+              setShowEditStudentsModal(true);
+              setCurrentStudent(item);
+            }}
+          />
+          <CourseDetails
+            onClick={() => {
+              setShowCourseDetailsModal(true);
+              setCurrentStudent(item);
+            }}
+          />
+        </div>
       ),
     };
   });
@@ -127,6 +139,14 @@ const AdminStudents = () => {
           edit={true}
         />
       )}
+      {/* Course Details Modal */}
+      {showCourseDetailsModal && (
+        <AdminStudentCourseDetails
+          onClose={() => setShowCourseDetailsModal(false)}
+          edit={true}
+        />
+      )}
+      {mailLoader && <Loader />}
     </AdminDashBoard>
   );
 };
@@ -137,35 +157,85 @@ function Edit({ onClick }) {
   return (
     <div
       onClick={onClick}
-      className="flex  items-center gap-2 text-themeBlue poppins-bold underline cursor-pointer font-semibold"
+      className=" text-themeBlue poppins-semibold text-xs underline cursor-pointer"
     >
-      <RiEdit2Line /> Edit
+      Edit
     </div>
   );
 }
 
-function Badge({ flag }) {
+function Badge({ currentStudent }) {
+  const { mailLoader, setMailLoader } = useAdmin();
+  const [attendanceData, setAttendanceData] = useState(null);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await API.get(
+          `/attendance/stats/${currentStudent?._id}`
+        );
+        setAttendanceData(data?.data);
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+
+    return () => {};
+  }, []);
+  let flag =
+    (attendanceData?.totalPresent +
+      attendanceData?.totalSick / attendanceData?.totalAttendances) *
+      100 >=
+    75;
+
   return (
     <div className="flex ">
       <button
         disabled
         className={`rounded ${
           flag ? "bg-green-300 text-green-800" : "bg-red-300 text-red-800"
-        } poppins-medium text-xs w-24 px-2 py-1 `}
+        } poppins-medium text-xs w-20 px-2 py-1 `}
       >
         {flag ? ">= 75%" : "< 75%"}
       </button>
       {!flag && (
         <button
           className="ml-2 poppins-medium-italic text-sm text-red-600  underline"
-          onClick={() =>
-            (window.location.href =
-              "mailto:recipient@example.com?subject=Hello&body=Hi there,")
-          }
+          onClick={async () => {
+            setMailLoader(true);
+            try {
+              console.log({
+                to: currentStudent?.email,
+                studentName: currentStudent?.name,
+              });
+              const res = await API.post("/mail/send-mail", {
+                to: currentStudent?.email,
+                studentName: currentStudent?.name,
+              });
+              toast.success("mail sent successfully");
+            } catch (error) {
+              toast.error("error while sending mail");
+            } finally {
+              setMailLoader(false);
+            }
+          }}
         >
           send mail
         </button>
       )}
+    </div>
+  );
+}
+function CourseDetails({ onClick }) {
+  return (
+    <div
+      onClick={onClick}
+      className=" text-themeBlue poppins-semibold text-xs underline cursor-pointer"
+    >
+      {" "}
+      Course Details
     </div>
   );
 }
