@@ -20,11 +20,11 @@ export const studentSidebarData = [
     icon: <MdAssignmentTurnedIn className="w-5 h-5 " />,
     link: "/student/assignments",
   },
-  {
-    title: "Time Table",
-    icon: <MdSchedule className="w-5 h-5 " />,
-    link: "/student/time-table",
-  },
+  // {
+  //   title: "Time Table",
+  //   icon: <MdSchedule className="w-5 h-5 " />,
+  //   link: "/student/time-table",
+  // },
 
   // {
   //   title: "Performance",

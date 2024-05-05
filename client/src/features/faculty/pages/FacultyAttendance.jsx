@@ -32,9 +32,9 @@ const FacultyAttendance = () => {
   const handleCourseChange = (e) => {
     setViewTable(false);
     const { value } = e.target;
-    const selectedOption = allCoursesAssigned
-      ?.slice(1)
-      ?.find((course) => course.course._id === value);
+    const selectedOption = allCoursesAssigned?.find(
+      (course) => course.course._id === value
+    );
     setSelectedCourse({
       courseId: selectedOption.course._id,
       departmentId: selectedOption.department._id,
@@ -160,7 +160,7 @@ const FacultyAttendance = () => {
           <option value="" className="poppins-medium">
             Select a course
           </option>
-          {allCoursesAssigned?.slice(1)?.map((course) => {
+          {allCoursesAssigned?.map((course) => {
             return (
               <option
                 key={course._id}

@@ -19,7 +19,7 @@ const studentSchema = new mongoose.Schema({
   regdNo: {
     type: String,
     require: true,
-    unique: true,
+    // unique: true,
   },
   mobile: {
     type: String,

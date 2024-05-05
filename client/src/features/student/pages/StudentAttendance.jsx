@@ -9,7 +9,6 @@ import { formatDate } from "../../../services/util";
 import Loader from "../../../components/Loader";
 
 const StudentAttendance = () => {
-  const subjects = ["COA", "CN", "OS", "AON"];
   const { user } = useSelector((state) => state?.auth);
   const [listOfAssignedCourses, setListOfAssignedCourses] = useState([]);
   const [selectedCourse, setSelctedCourse] = useState("");
@@ -133,23 +132,29 @@ const StudentAttendance = () => {
         <>
           {/* attendance section */}
 
-          <div className="mt-10 relative ">
-            <div className=" mb-5 flex items-center justify-between ">
-              <div className="">
-                <div className=" poppins-bold  mb-1  text-gray-700">
-                  {course}
-                </div>
-                <div className=" poppins-medium    text-gray-500">
-                  {attendanceData?.length} attendance{"(s)"} available
+          {attendanceData?.length === 0 ? (
+            <div className=" poppins-bold  mb-1 mt-10  text-gray-700">
+              No Records Found
+            </div>
+          ) : (
+            <div className="mt-10 relative ">
+              <div className=" mb-5 flex items-center justify-between ">
+                <div className="">
+                  <div className=" poppins-bold  mb-1  text-gray-700">
+                    {course}
+                  </div>
+                  <div className=" poppins-medium    text-gray-500">
+                    {attendanceData?.length} attendance{"(s)"} available
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <Table
-              tableData={attendanceTableData}
-              tableHeadData={attendanceTableHeadData}
-            />
-          </div>
+              <Table
+                tableData={attendanceTableData}
+                tableHeadData={attendanceTableHeadData}
+              />
+            </div>
+          )}
         </>
       )}
     </StudentDashBoard>

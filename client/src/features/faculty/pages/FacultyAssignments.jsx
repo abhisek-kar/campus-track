@@ -1,125 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FacultyDashBoard from "../../../components/dashboard/FacultyDashBoard";
-import Dropdown from "react-dropdown";
-import Table, { Badge, Edit } from "../../../components/Table";
+import Table from "../../../components/Table";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../components/Loader";
-
-const assignmentDetails = [
-  {
-    semester: "1st",
-    courseName: "Introduction to Computer Science",
-    createdOn: "2023-05-15",
-    status: "Active",
-  },
-  {
-    semester: "2nd",
-    courseName: "Data Structures and Algorithms",
-    createdOn: "2023-06-20",
-    status: "Inactive",
-  },
-  {
-    semester: "3rd",
-    courseName: "Database Management Systems",
-    createdOn: "2023-07-10",
-    status: "Active",
-  },
-  {
-    semester: "4th",
-    courseName: "Web Development",
-    createdOn: "2023-08-05",
-    status: "Inactive",
-  },
-  {
-    semester: "5th",
-    courseName: "Artificial Intelligence",
-    createdOn: "2023-09-12",
-    status: "Active",
-  },
-  {
-    semester: "6th",
-    courseName: "Machine Learning",
-    createdOn: "2023-10-18",
-    status: "Inactive",
-  },
-  {
-    semester: "7th",
-    courseName: "Cybersecurity",
-    createdOn: "2023-11-25",
-    status: "Active",
-  },
-  {
-    semester: "8th",
-    courseName: "Software Engineering",
-    createdOn: "2024-01-05",
-    status: "Inactive",
-  },
-  {
-    semester: "9th",
-    courseName: "Cloud Computing",
-    createdOn: "2024-02-14",
-    status: "Active",
-  },
-  {
-    semester: "10th",
-    courseName: "Network Security",
-    createdOn: "2024-03-20",
-    status: "Inactive",
-  },
-];
-
-const assignmentTableHeadData = [
-  {
-    accessorKey: "serial",
-    header: "Serial",
-    size: 50,
-  },
-  {
-    accessorKey: "branch",
-    header: "Branch",
-    size: 150,
-  },
-  {
-    accessorKey: "semester",
-    header: "Semester",
-    size: 100,
-  },
-  {
-    accessorKey: "courseName",
-    header: "Course Name",
-    size: 250,
-  },
-  {
-    accessorKey: "createdOn",
-    header: "Created On",
-    size: 200,
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    size: 100,
-  },
-  {
-    accessorKey: "action",
-    header: "Action",
-    size: 100,
-  },
-];
-
-const aassignmentTableData = assignmentDetails.map((item, idx) => {
-  return {
-    serial: idx + 1,
-    branch: item?.branch,
-    semester: item?.semester,
-    courseName: item?.courseName,
-    createdOn: item?.createdOn,
-    status: item?.status,
-    status: <Badge status={item?.status} />,
-    action: <Edit />,
-  };
-});
+import API from "../../../services/API";
+import toast from "react-hot-toast";
+import { formatDate } from "./../../../services/util";
+import { IoDocumentText } from "react-icons/io5";
+import AssignmentViewModal from "../../../components/modals/faculty/AssignmentViewModal";
+import { useAdmin } from "../../../context/adminContext";
 
 const FacultyAssignments = () => {
+  const { user } = useSelector((state) => state?.auth);
   const [selectedCourse, setSelectedCourse] = useState({
     courseId: "",
     departmentId: "",
@@ -127,16 +19,17 @@ const FacultyAssignments = () => {
   });
   const { allCoursesAssigned } = useSelector((state) => state?.faculty);
   const [viewTable, setViewTable] = useState(false);
+  const [showViewModal, setShowViewModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [date, setDate] = useState("");
   const [task, setTask] = useState("");
   const [doc, setDoc] = useState("");
-  const dispatch = useDispatch();
+  const [assignmentDetails, setAssignmentDetails] = useState([]);
   const handleCourseChange = (e) => {
     setViewTable(false);
     const { value } = e.target;
     const selectedOption = allCoursesAssigned
-      ?.slice(1)
+      // ?.slice(1)
       ?.find((course) => course.course._id === value);
     setSelectedCourse({
       courseId: selectedOption.course._id,
@@ -144,7 +37,12 @@ const FacultyAssignments = () => {
       semester: selectedOption.semester,
     });
   };
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (new Date(date) < Date.now()) {
+      return toast.error("submiison date should be more than current date");
+    }
     setLoading(true);
     try {
       // Prepare the data to send to the API
@@ -154,13 +52,16 @@ const FacultyAssignments = () => {
       formData.append("semester", selectedCourse.semester);
       formData.append("task", task);
       formData.append("doc", doc); // Assuming doc is a file object
-      formData.append("dueDate", date);
-      console.log(formData);
-      // Make an API call to submit the assignment
-      // const response = await API.post("/assignments/create", formData);
+      formData.append("facultyId", user?._id); // Assuming doc is a file object
+      formData.append("submitBy", date);
 
-      // Handle the response as needed
-      // console.log(response.data); // Log the response or update state, etc.
+      // Make an API call to submit the assignment
+      const { data } = await API.post(
+        "/assignment/create-assignment",
+        formData
+      );
+      console.log(data);
+      toast.success(data?.message);
 
       // Clear the form fields after successful submission
       setSelectedCourse({ courseId: "", departmentId: "", semester: "" });
@@ -168,15 +69,93 @@ const FacultyAssignments = () => {
       setDoc(null);
       setDate("");
     } catch (error) {
+      toast.error(error?.response?.data?.message || error?.message);
       console.error("Error submitting assignment:", error);
     } finally {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await API.get(
+          "/assignment/faculty-assignments/" + user?._id
+        );
+        setAssignmentDetails(data?.assignments);
+        // console.log("XXXXXXXXXXXXXXXXXXXXXXX", data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
+    fetchData();
+
+    return () => {};
+  }, [loading]);
+
+  const dispatch = useDispatch();
+
+  const assignmentTableHeadData = [
+    {
+      accessorKey: "serial",
+      header: "Serial",
+      size: 30,
+    },
+    {
+      accessorKey: "branch",
+      header: "Branch",
+      size: 50,
+    },
+    {
+      accessorKey: "semester",
+      header: "Sem",
+      size: 50,
+    },
+    {
+      accessorKey: "courseName",
+      header: "Course Name",
+      size: 150,
+    },
+    {
+      accessorKey: "createdOn",
+      header: "Created On",
+      size: 50,
+    },
+    {
+      accessorKey: "submitBy",
+      header: "Submit By",
+      size: 50,
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      size: 100,
+    },
+    {
+      accessorKey: "action",
+      header: "Action",
+      size: 100,
+    },
+  ];
+
+  const aassignmentTableData = assignmentDetails.map((item, idx) => {
+    return {
+      serial: idx + 1,
+      branch: item?.department?.code,
+      semester: item?.semester,
+      courseName: item?.course?.name,
+      createdOn: formatDate(item?.createdOn),
+      submitBy: formatDate(item?.submitBy),
+      status: <Badge status={new Date(item?.submitBy) >= new Date()} />,
+      action: <View onClick={() => setShowViewModal(true)} item={item} />,
+    };
+  });
   return (
     <FacultyDashBoard>
       {loading && <Loader />}
+      {showViewModal && (
+        <AssignmentViewModal onClose={() => setShowViewModal(false)} />
+      )}
       <p className="poppins-medium text-gray-800 text-2xl ">
         Create Assignment
       </p>
@@ -191,7 +170,7 @@ const FacultyAssignments = () => {
           <option value="" className="poppins-medium">
             Select a course
           </option>
-          {allCoursesAssigned?.slice(1)?.map((course) => {
+          {allCoursesAssigned?.map((course) => {
             return (
               <option
                 key={course._id}
@@ -242,7 +221,7 @@ const FacultyAssignments = () => {
           {/* submit */}
           <div className="w-full flex justify-end ">
             <button
-              onClick={handleSubmit}
+              onClick={(e) => handleSubmit(e)}
               className=" px-2 py-1 bg-themeBlue rounded hover:opacity-90 poppins-medium text-white my-5 "
             >
               Submit
@@ -252,17 +231,49 @@ const FacultyAssignments = () => {
       </div>
 
       {/* list of assignments  */}
-      <div className="relative">
-        <p className="poppins-medium text-gray-800 text-xl absolute z-10 ml-2">
-          List of Assignments
+      <div className=" mb-5">
+        <p className="poppins-medium text-gray-800 text-2xl mb-2 ">
+          {assignmentDetails?.length > 0
+            ? "List of Assignments"
+            : "No Assignment Found"}
         </p>
-        <Table
-          tableData={aassignmentTableData}
-          tableHeadData={assignmentTableHeadData}
-        />
+        {assignmentDetails?.length > 0 && (
+          <Table
+            tableData={aassignmentTableData}
+            tableHeadData={assignmentTableHeadData}
+          />
+        )}
       </div>
     </FacultyDashBoard>
   );
 };
 
 export default FacultyAssignments;
+
+function Badge({ status }) {
+  return (
+    <button
+      disabled
+      className={`rounded-md ${
+        status ? "bg-green-200 text-green-700" : "bg-red-200 text-red-700"
+      } poppins-medium text-xs w-20 px-2 py-1 `}
+    >
+      {status ? "Active" : "Inactive"}
+    </button>
+  );
+}
+function View({ onClick, item }) {
+  const { currentAssignment, setCurrentAssignment } = useAdmin();
+  return (
+    <div
+      onClick={() => {
+        onClick();
+        console.log(item);
+        setCurrentAssignment(item);
+      }}
+      className="flex  items-center  text-themeBlue gap-1 poppins-bold underline cursor-pointer font-semibold"
+    >
+      <IoDocumentText /> View
+    </div>
+  );
+}

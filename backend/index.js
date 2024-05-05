@@ -6,6 +6,7 @@ const connectDb = require("./configs/db");
 const cookieParser = require("cookie-parser");
 const { sendMail } = require("./controllers/mailController");
 const multer = require("multer");
+const path = require("path");
 
 //dot en configuration
 dotenv.config();
@@ -24,20 +25,6 @@ app.use(cookieParser());
 
 // multer config
 // Define storage configuration for Multer
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // Specify the destination folder where files will be stored
-    cb(null, "/uploads");
-  },
-  filename: function (req, file, cb) {
-    // Define the filename for the uploaded file
-    // Use Date.now() to ensure files have unique names
-    cb(null, "campus-track" + Date.now() + "-" + file.originalname);
-  },
-});
-
-// Initialize Multer with storage configuration
-exports.upload = multer({ storage });
 
 //routes
 // URL => http://localhost:8080

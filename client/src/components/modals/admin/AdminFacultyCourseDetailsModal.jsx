@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import API from "../../../services/API";
 import Dropdown from "react-dropdown";
 import toast, { Toaster } from "react-hot-toast";
+import Loader from "./../../Loader";
 
 const AdminCourseDetails = ({ onClose }) => {
   const { user } = useSelector((state) => state?.auth);
@@ -16,65 +17,14 @@ const AdminCourseDetails = ({ onClose }) => {
   const [selectedAssignCourse, setSelectedAssignCourse] = useState("");
   const [selectedRevokeCourse, setSelectedRevokeCourse] = useState("");
   const [semester, setSemester] = useState("");
-  // const assignedCourseDetails = [
-  //   {
-  //     courseId: "1",
-  //     semester: "4th",
-  //     subject: "Computer Network",
-  //   },
-  //   {
-  //     courseId: "2",
-  //     semester: "6th",
-  //     subject: "Automata Theory",
-  //   },
-  //   {
-  //     courseId: "3",
+  const [loading, setLoading] = useState(false);
 
-  //     semester: "8th",
-  //     subject: "Cloud Computing",
-  //   },
-  // ];
   const actionOptions = [
     ["assigned-courses", "Assigned Courses"],
     ["assign-course", "Assign New Course"],
     ["revoke-course", "Revoke Existing Course"],
   ];
   const [action, setAction] = useState(actionOptions[0][0]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // console.log(currentFaculty);
-        const userData = {
-          facultyId: currentFaculty?._id,
-          departmentId: user?.department?._id,
-        };
-        const { data } = await API.post("/faculty/dept-courses", userData);
-        console.log();
-        setListOfAssigendCourse(data?.faculty?.courses?.slice(1));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-
-    return () => {};
-  }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data } = await API.get("/course");
-        setListOfAvailableCourse(data?.courses);
-        console.log(data?.courses);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-
-    return () => {};
-  }, []);
   const handleAssignSubmit = async (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -84,7 +34,7 @@ const AdminCourseDetails = ({ onClose }) => {
     if (!selectedAssignCourse) {
       return toast.error("please select a course");
     }
-
+    setLoading(true);
     const courseData = {
       facultyId: currentFaculty?._id,
       courseId: selectedAssignCourse,
@@ -101,6 +51,8 @@ const AdminCourseDetails = ({ onClose }) => {
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.message || error?.message);
+    } finally {
+      setLoading(false);
     }
   };
   const handleRevokeSubmit = async (e) => {
@@ -109,7 +61,7 @@ const AdminCourseDetails = ({ onClose }) => {
     if (!selectedRevokeCourse) {
       return toast.error("please select a course");
     }
-
+    setLoading(true);
     const courseData = {
       facultyId: currentFaculty?._id,
       courseId: selectedRevokeCourse,
@@ -124,10 +76,49 @@ const AdminCourseDetails = ({ onClose }) => {
     } catch (error) {
       console.log(error);
       toast.error(error?.response?.data?.message || error?.message);
+    } finally {
+      setLoading(false);
     }
   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // console.log(currentFaculty);
+        const userData = {
+          facultyId: currentFaculty?._id,
+          departmentId: user?.department?._id,
+        };
+        const { data } = await API.post("/faculty/dept-courses", userData);
+        // console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX", data);
+        setListOfAssigendCourse(data?.faculty?.courses);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+
+    return () => {};
+  }, [action, selectedRevokeCourse, selectedAssignCourse]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data } = await API.get("/course");
+        setListOfAvailableCourse(data?.courses);
+        console.log(data?.courses);
+      } catch (error) {
+        // console.log(error);
+      }
+    };
+
+    fetchData();
+
+    return () => {};
+  }, []);
+
   return (
     <div className="fixed top-0 right-0 bottom-0 left-0 z-[2147483647]">
+      {loading && <Loader />}
       <div
         className="fixed top-0 right-0 bottom-0 left-0 bg-opacity-50 bg-slate-500 flex justify-center items-center overflow-auto"
         onClick={onClose}
@@ -243,23 +234,15 @@ const AdminCourseDetails = ({ onClose }) => {
                           <option value="" className="poppins-medium">
                             Select a course
                           </option>
-                          {listOfAvailableCourse
-                            ?.filter(
-                              (course) =>
-                                !listOfAssigendCourse.find(
-                                  (assignedCourse) =>
-                                    assignedCourse._id === course._id
-                                )
-                            )
-                            .map((course) => (
-                              <option
-                                key={course._id}
-                                value={course._id}
-                                className="poppins-medium"
-                              >
-                                {course?.name}
-                              </option>
-                            ))}
+                          {listOfAvailableCourse.map((course) => (
+                            <option
+                              key={course._id}
+                              value={course._id}
+                              className="poppins-medium"
+                            >
+                              {course?.name}
+                            </option>
+                          ))}
                         </select>
                       </div>
                     </div>
@@ -300,8 +283,8 @@ const AdminCourseDetails = ({ onClose }) => {
                           </option>
                           {listOfAssigendCourse?.map((course) => (
                             <option
-                              key={course._id}
-                              value={course._id}
+                              key={course?.course?._id}
+                              value={course?.course?._id}
                               className="poppins-medium"
                             >
                               {course?.course?.name || "Course Name"}

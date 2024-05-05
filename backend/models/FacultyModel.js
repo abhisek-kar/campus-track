@@ -20,11 +20,6 @@ const facultySchema = new mongoose.Schema({
   password: {
     type: String,
   },
-  // department: {
-  //   type: mongoose.Schema.ObjectId,
-  //   ref: "Department",
-  //   required: true,
-  // },
   courses: [
     {
       department: {
@@ -40,7 +35,6 @@ const facultySchema = new mongoose.Schema({
       course: {
         type: mongoose.Schema.ObjectId,
         ref: "Course",
-        unique: true,
       },
     },
   ],

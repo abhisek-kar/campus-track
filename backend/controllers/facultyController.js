@@ -242,8 +242,8 @@ exports.addCourseToFaculty = async (req, res) => {
 
     const existingCourse = faculty.courses.find(
       (course) =>
-        String(course.course) === courseId &&
-        String(course.department) === departmentId
+        course.course.toString() === courseId &&
+        course.department.toString() === departmentId
     );
 
     if (existingCourse) {
@@ -273,9 +273,11 @@ exports.addCourseToFaculty = async (req, res) => {
         .json({ success: false, message: "Faculty not found" });
     }
 
-    res
-      .status(200)
-      .json({ success: true, message: "Course added to faculty successfully" });
+    res.status(200).json({
+      success: true,
+      message: "Course added to faculty successfully",
+      updatedFaculty,
+    });
   } catch (error) {
     console.error(error);
     res
@@ -382,7 +384,7 @@ exports.getCoursesByDepartment = async (req, res) => {
 // revoke course from faculty
 exports.revokeCourseFromFaculty = async (req, res) => {
   const { facultyId, courseId, departmentId } = req.body;
-
+  console.log(req.body);
   // Validate input IDs
   if (
     !mongoose.Types.ObjectId.isValid(facultyId) ||
@@ -396,30 +398,22 @@ exports.revokeCourseFromFaculty = async (req, res) => {
 
   try {
     // Check if the faculty exists
-    const faculty = await FacultyModel.findById(facultyId).populate({
-      path: "courses",
-      populate: {
-        path: "course department", // Populate both course and department fields
-        model: "Course ",
-      },
-    });
-    console.log(faculty);
+    const faculty = await FacultyModel.findById(facultyId);
+    // console.log(faculty);
     if (!faculty) {
       return res
         .status(404)
         .json({ success: false, message: "Faculty not found" });
     }
 
-    // console.log("Faculty Courses:", faculty.courses.slice(1));
+    console.log("Faculty Courses:", faculty.courses);
 
     // Check if the course to revoke exists in the faculty's courses
-    const courseIndex = faculty?.courses
-      ?.slice(1)
-      ?.findIndex(
-        (item) =>
-          String(item?.course) === courseId &&
-          String(item?.department) === departmentId
-      );
+    const courseIndex = faculty?.courses?.findIndex(
+      (item) =>
+        item?.course.toString() === courseId &&
+        item?.department.toString() === departmentId
+    );
 
     // console.log("Course Index:", courseIndex);
 

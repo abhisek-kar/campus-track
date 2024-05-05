@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useAdmin } from "../context/adminContext";
 
 const OtpBox = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const { otpVal, setOtpVal } = useAdmin();
 
   const handleInputChange = (index, value, e) => {
     const newOtp = [...otp];
@@ -27,6 +29,7 @@ const OtpBox = () => {
     }
 
     setOtp(newOtp);
+    setOtpVal(newOtp?.join(""));
   };
 
   return (

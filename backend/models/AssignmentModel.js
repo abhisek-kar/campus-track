@@ -2,6 +2,12 @@ const { isDate } = require("moment/moment");
 const mongoose = require("mongoose");
 
 const assignmentSchema = new mongoose.Schema({
+  faculty: {
+    type: mongoose.Schema.ObjectId,
+    required: true,
+    ref: "Faculty",
+    required: true,
+  },
   department: {
     type: mongoose.Schema.ObjectId,
     required: true,
@@ -23,8 +29,11 @@ const assignmentSchema = new mongoose.Schema({
     type: String,
   },
   document: {
-    data: Buffer, // Binary data of the document
-    contentType: String, // MIME type of the document (e.g., "image/jpeg", "application/pdf")
+    filename: String,
+    mimetype: String,
+    size: Number,
+    path: String,
+    uploadedAt: { type: Date, default: Date.now },
   },
   createdOn: {
     type: Date,
@@ -33,6 +42,27 @@ const assignmentSchema = new mongoose.Schema({
   submitBy: {
     type: Date,
   },
+  submissions: [
+    {
+      student: {
+        type: mongoose.Schema.ObjectId,
+      },
+      answer: {
+        type: String,
+      },
+      doc: {
+        filename: String,
+        mimetype: String,
+        size: Number,
+        path: String,
+        uploadedAt: { type: Date, default: Date.now },
+      },
+      submittedOn: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 });
 
 module.exports = mongoose.model("Assignment", assignmentSchema);

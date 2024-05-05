@@ -6,6 +6,8 @@ export const AdminProvider = ({ children }) => {
   const [currentStudent, setCurrentStudent] = useState(null);
   const [currentFaculty, setCurrentFaculty] = useState(null);
   const [mailLoader, setMailLoader] = useState(false);
+  const [currentAssignment, setCurrentAssignment] = useState(null);
+  const [otpVal, setOtpVal] = useState("");
 
   return (
     <AdminContext.Provider
@@ -16,6 +18,10 @@ export const AdminProvider = ({ children }) => {
         currentFaculty,
         mailLoader,
         setMailLoader,
+        currentAssignment,
+        setCurrentAssignment,
+        otpVal,
+        setOtpVal,
       }}
     >
       {children}

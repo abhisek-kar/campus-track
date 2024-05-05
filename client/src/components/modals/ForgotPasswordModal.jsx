@@ -5,6 +5,8 @@ import API from "../../services/API";
 import Loader from "../Loader";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import OtpInput from "react-otp-input";
+import { useAdmin } from "../../context/adminContext";
+import { Password } from "@mui/icons-material";
 
 const roles = ["student", "faculty", "admin"];
 
@@ -12,8 +14,8 @@ const ForgotPasswordModal = ({ onClose }) => {
   const [showOtp, setShowOtp] = useState(false);
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
-  const [otp, setOtp] = useState("");
   const [showSpin, setShowSpin] = useState(false);
+  const { otpVal, setOtpVal } = useAdmin();
 
   //
   const [newPassword, setNewPassword] = useState("");
@@ -37,8 +39,6 @@ const ForgotPasswordModal = ({ onClose }) => {
       const { data } = await API.patch("/auth/otp-request", otpData);
       console.log(data);
       setShowOtp(true);
-      setEmail("");
-      setRole("");
       return toast.success(data?.message);
     } catch (error) {
       console.log(error);
@@ -48,15 +48,25 @@ const ForgotPasswordModal = ({ onClose }) => {
     }
   };
   const handleResetPassword = async () => {
-    setShowSpin(true);
+    if (!email || !Password || !newPassword || !otpVal || !confirmNewPassword) {
+      return toast.error("All fields are required");
+    }
+    if (otpVal.length === 0) {
+      return toast.error("please provide the otp");
+    }
+    if (newPassword !== confirmNewPassword) {
+      return toast.error("passwords do not match");
+    }
     try {
+      setShowSpin(true);
       const resetData = {
         email,
-        otp,
+        otp: otpVal,
         newPassword,
         role,
       };
-      const { data } = await API.patch("/reset-password", resetData);
+      console.log(resetData);
+      const { data } = await API.patch("/auth/reset-password", resetData);
       console.log(data);
       onClose();
       toast.success(data?.message);
@@ -67,8 +77,24 @@ const ForgotPasswordModal = ({ onClose }) => {
       setShowSpin(false);
     }
   };
-  const handleResendCode = () => {
-    return toast.success("Code Sent Successfully");
+  const handleResendCode = async () => {
+    setShowSpin(true);
+    try {
+      const otpData = {
+        role,
+        email,
+      };
+      console.log(otpData);
+      const { data } = await API.patch("/auth/otp-request", otpData);
+      console.log(data);
+      setShowOtp(true);
+      return toast.success("otp resent successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || error?.message);
+    } finally {
+      setShowSpin(false);
+    }
   };
   return (
     <div className="fixed top-0 right-0 bottom-0 left-0 z-[2147483647]">

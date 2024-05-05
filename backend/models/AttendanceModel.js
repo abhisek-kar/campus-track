@@ -12,14 +12,13 @@ const attendanceSchema = new mongoose.Schema({
       course: {
         type: mongoose.Schema.ObjectId,
         ref: "Course",
-        unique: true,
       },
       records: [
         {
           date: {
             type: Date,
-            default: Date.now,
-            unique: true,
+            // default: Date.now,
+            // unique: true,
           },
 
           status: {

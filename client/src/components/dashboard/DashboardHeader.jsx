@@ -27,9 +27,9 @@ const DashboardHeader = ({ onClick, role, userName, children }) => {
     <div className=" flex items-center justify-between px-2 py-[5px] shadow-md w-full z-30 fixed bg-white">
       <div>{children}</div>
       <div className="flex items-center gap-5 mr-5">
-        <button onClick={onClick}>
+        {/* <button onClick={onClick}>
           <IoMdNotifications className="w-6 h-6  text-gray-700" />
-        </button>
+        </button> */}
         {/* <button>
           <AiTwotoneSetting className="w-6 h-6  text-gray-700" />
         </button> */}

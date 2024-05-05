@@ -69,12 +69,6 @@ exports.registerController = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    if (error.code === 11000 && error.keyPattern && error.keyPattern.mail) {
-      return res.status(400).json({
-        success: false,
-        message: "Email already exists, please use a different email",
-      });
-    }
     return res.status(500).json({
       success: false,
       message: "Error In Register API",
@@ -292,7 +286,7 @@ exports.resetPasswordOtpRequest = async (req, res) => {
 
 exports.otpValidationAndUpdatePassword = async (req, res) => {
   const { email, otp, newPassword, role } = req.body;
-
+  console.log(req.body);
   try {
     // Find the user based on the email and role
     let user;

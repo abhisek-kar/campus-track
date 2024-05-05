@@ -5,50 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { TooltipWrapper, Tooltip } from "react-tooltip";
 import { useSelector } from "react-redux";
 
-// let coursesAssigned = [
-//   {
-//     courseName: "Physics",
-//     branchName: "Computer Science Engineering",
-//     courseID: "CS101",
-//     totalStudents: 50,
-//     semester: "1st",
-//   },
-//   {
-//     courseName: "Mathematics",
-//     branchName: "Electrical Engineering",
-//     courseID: "EE201",
-//     totalStudents: 45,
-//     semester: "2nd",
-//   },
-//   {
-//     courseName: "Chemistry",
-//     branchName: "Mechanical Engineering",
-//     courseID: "ME301",
-//     totalStudents: 60,
-//     semester: "3rd",
-//   },
-//   {
-//     courseName: "Biology",
-//     branchName: "Civil Engineering",
-//     courseID: "CE401",
-//     totalStudents: 55,
-//     semester: "4th",
-//   },
-//   {
-//     courseName: "Computer Programming",
-//     branchName: "Chemical Engineering",
-//     courseID: "CH501",
-//     totalStudents: 40,
-//     semester: "5th",
-//   },
-//   {
-//     courseName: "English Literature",
-//     branchName: "Biotechnology",
-//     courseID: "BT601",
-//     totalStudents: 48,
-//     semester: "6th",
-//   },
-// ];
 const FacultyHome = () => {
   const navigate = useNavigate();
   const { allCoursesAssigned } = useSelector((state) => state?.faculty);
@@ -63,7 +19,7 @@ const FacultyHome = () => {
             Courses Assigned
           </p>
           <p className="poppins-regular text-gray-600 text-sm">
-            Total 10 courses assigned
+            Total {allCoursesAssigned?.length || 0} courses assigned
           </p>
         </div>
         {/* take attendance button */}
@@ -78,7 +34,7 @@ const FacultyHome = () => {
 
       {/* courses boxes */}
       <div className="grid grid-cols-2 w-full justify-center items-center gap-y-4  mt-10">
-        {allCoursesAssigned?.slice(1)?.map((item, index) => (
+        {allCoursesAssigned?.map((item, index) => (
           <div
             key={index}
             className="flex flex-col items-center justify-center"
@@ -110,7 +66,9 @@ function CourseBox({
     <div className="bg-themeBlue bg-opacity-95 w-[500px] h-48 text-white  p-2  m-1">
       <div className="flex justify-between items-center">
         {" "}
-        <div className="ml-2 poppins-medium text-xl mb-3 ">{courseName}</div>
+        <div className="ml-2 poppins-medium text-xl mb-3 w-full ">
+          {courseName}
+        </div>
       </div>
 
       <TooltipWrapper content="Branch Name" variant="light" place="bottom-end">

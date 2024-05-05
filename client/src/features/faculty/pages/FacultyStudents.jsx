@@ -24,7 +24,7 @@ const FacultyStudents = () => {
     setViewTable(false);
     const { value } = e.target;
     const selectedOption = allCoursesAssigned
-      ?.slice(1)
+      // ?.slice(1)
       ?.find((course) => course.course._id === value);
     setSelectedCourse({
       courseId: selectedOption.course._id,
@@ -50,7 +50,7 @@ const FacultyStudents = () => {
     console.log(selectedCourse);
     try {
       const { data } = await API.post(
-        "student//get-students-stats-by-course",
+        "student/get-students-stats-by-course",
         selectedCourse
       );
       console.log(data);
@@ -162,7 +162,7 @@ const FacultyStudents = () => {
           <option value="" className="poppins-medium">
             Select a course
           </option>
-          {allCoursesAssigned?.slice(1)?.map((course) => {
+          {allCoursesAssigned?.map((course) => {
             return (
               <option
                 key={course._id}
